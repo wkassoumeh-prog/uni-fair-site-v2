@@ -20,17 +20,18 @@ const About: React.FC = () => {
           <div className="lg:w-1/2">
             <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">About the Event</span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">
-              Where Dreams Meet Global <br />Opportunities
+              {/* Where Dreams Meet Global <br />Opportunities */}
+              Connecting Students with Their Future
             </h2>
             <div className="space-y-6 text-slate-600 leading-relaxed text-lg">
               <p>
-                The Global University Fair 2026 is the premier international education exhibition, bringing together over 150 top-ranked universities from across the globe. Our mission is to empower students with the information and connections they need to embark on their international academic journeys.
+              CAREER EXPO SYRIA is the first educational exhibition of its kind in Syria, bringing together local and international universities, online universities, institutes, training centers, and e-learning platforms in one place
               </p>
               <p>
-                Founded in 2001, the fair has helped over 500,000 students discover degree programs, scholarships, and career paths that align with their passions. Whether you're interested in STEM, Humanities, Business, or the Arts, you'll find specialized advisors ready to guide you.
+              The exhibition aims to create a direct connection between students and educational institutions, helping them make informed academic and career decisions through face-to-face interaction.
               </p>
               <p>
-                This year, we are introducing interactive workshops, live application reviews, and exclusive networking sessions with alumni from Ivy League, Russell Group, and other prestigious international cohorts.
+              CAREER EXPO SYRIA offers students and parents a unique opportunity to explore educational options, compare programs, and communicate directly with official representatives of educational institutions.
               </p>
             </div>
             

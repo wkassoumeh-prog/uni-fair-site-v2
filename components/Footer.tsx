@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
                 </svg>
                 <p>Global Exhibition Center, Suite 500<br />Metropolis City, MC 10293</p>
               </div>
-              <p className="font-bold text-white mt-4">Dates: October 12 - 14, 2026</p>
+              <p className="font-bold text-white mt-4">Dates: July 15 – 17, 2026</p>
             </div>
           </div>
 

@@ -8,8 +8,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
   const navLinks = [
     { name: 'About', href: '#about' },
-    { name: 'Universities', href: '#universities' },
-    { name: 'Schedule', href: '#schedule' },
+    { name: 'Exhibitors', href: '#why-exhibit' },
+    { name: 'Visitors', href: '#for-visitors' },
+    { name: 'FAQ', href: '#faq' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -24,15 +25,16 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
       <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors duration-300 ${
+          <div className={`w-20 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors duration-300 ${
             isScrolled ? 'bg-blue-900 text-white' : 'bg-white text-blue-900'
           }`}>
-            U
+            CES 
           </div>
-          <span className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
+          <span className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
             isScrolled ? 'text-blue-900' : 'text-white'
           }`}>
-            UniFair <span className="text-amber-500">2026</span>
+            {/* Career Expo Syria 2026 */}
+            Career Expo <span className="text-amber-500">Syria 2026</span>
           </span>
         </div>
 
