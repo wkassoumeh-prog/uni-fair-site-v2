@@ -1,7 +1,68 @@
+"use client";
 
-import React from 'react';
+import React, { useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const ExhibitorRegistration: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      institution_name: formData.get('institution_name'),
+      contact_name: formData.get('contact_name'),
+      email: formData.get('email'),
+      institution_type: formData.get('institution_type'),
+      message: formData.get('message'),
+    };
+
+    try {
+      const { error: sbError } = await supabase
+        .from('registrations')
+        .insert([data]);
+
+      if (sbError) throw sbError;
+      setSuccess(true);
+    } catch (err: any) {
+      console.error('Registration error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (success) {
+    return (
+      <section id="registration" className="py-24 bg-slate-50">
+        <div className="container mx-auto px-6 text-center">
+          <div className="bg-white p-12 rounded-3xl shadow-xl max-w-2xl mx-auto">
+            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-blue-900 mb-4">Registration Submitted!</h2>
+            <p className="text-lg text-slate-600 mb-8">
+              Thank you for your interest in CAREER EXPO SYRIA. Our team will review your application and contact you shortly.
+            </p>
+            <button 
+              onClick={() => setSuccess(false)}
+              className="px-8 py-3 bg-blue-900 text-white font-bold rounded-xl hover:bg-blue-800 transition-colors"
+            >
+              Submit Another
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="registration" className="py-24 bg-slate-50">
       <div className="container mx-auto px-6">
@@ -34,47 +95,61 @@ const ExhibitorRegistration: React.FC = () => {
 
           <div className="lg:w-1/2">
             <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
-              <h3 className="text-2xl font-bold text-blue-900 mb-8 text-center">Registration Process</h3>
-              <div className="space-y-12">
-                {[
-                  {
-                    step: "1",
-                    title: "Complete the form",
-                    desc: "Complete the exhibitor registration form with your institution's details."
-                  },
-                  {
-                    step: "2",
-                    title: "Application review",
-                    desc: "Our exhibition team will review your application for eligibility and space availability."
-                  },
-                  {
-                    step: "3",
-                    title: "Direct follow-up",
-                    desc: "We will contact you directly to confirm participation and discuss packages."
-                  }
-                ].map((proc, idx) => (
-                  <div key={idx} className="flex gap-6 relative">
-                    {idx !== 2 && (
-                      <div className="absolute top-12 left-6 bottom-0 w-0.5 bg-slate-100 -mb-12"></div>
-                    )}
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold text-xl z-10">
-                      {proc.step}
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-blue-900 mb-2">{proc.title}</h4>
-                      <p className="text-slate-600">{proc.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h3 className="text-2xl font-bold text-blue-900 mb-8 text-center">Register Your Institution</h3>
               
-              <div className="mt-12 pt-8 border-t border-slate-100">
-                <p className="text-sm text-slate-500 text-center mb-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-slate-700 text-sm font-bold mb-2">Institution Name</label>
+                  <input name="institution_name" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="University/Institute Name" />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-slate-700 text-sm font-bold mb-2">Contact Name</label>
+                    <input name="contact_name" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Full Name" />
+                  </div>
+                  <div>
+                    <label className="block text-slate-700 text-sm font-bold mb-2">Email Address</label>
+                    <input name="email" required type="email" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="email@institution.edu" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 text-sm font-bold mb-2">Institution Type</label>
+                  <select name="institution_type" required className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all">
+                    <option value="">Select Type</option>
+                    <option value="Local University">Local University</option>
+                    <option value="International University">International University</option>
+                    <option value="Online University">Online University</option>
+                    <option value="Training Institute">Training Institute</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 text-sm font-bold mb-2">Message (Optional)</label>
+                  <textarea name="message" rows={3} className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Any specific requirements?"></textarea>
+                </div>
+
+                {error && (
+                  <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">
+                    {error}
+                  </div>
+                )}
+
+                <button 
+                  disabled={loading}
+                  type="submit"
+                  className={`w-full py-4 bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold rounded-xl transition-colors shadow-lg shadow-amber-200 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {loading ? 'Submitting...' : 'Register Now'}
+                </button>
+              </form>
+              
+              <div className="mt-8 pt-8 border-t border-slate-100">
+                <p className="text-sm text-slate-500 text-center">
                   Participation is paid and subject to the exhibition’s terms and packages.
                 </p>
-                <button className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold rounded-xl transition-colors shadow-lg shadow-amber-200">
-                  Register Now
-                </button>
               </div>
             </div>
           </div>
@@ -85,4 +160,3 @@ const ExhibitorRegistration: React.FC = () => {
 };
 
 export default ExhibitorRegistration;
-

@@ -1,7 +1,30 @@
+"use client";
 
-import React from 'react';
+import React, { useState } from 'react';
+import { sendContactEmail } from '@/app/actions/contact';
 
 const Contact: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const result = await sendContactEmail(formData);
+
+    if (result.error) {
+      setError(result.error);
+      setLoading(false);
+    } else {
+      setSuccess(true);
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-24 bg-blue-900 text-white relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
@@ -53,30 +76,61 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-3xl p-10 shadow-2xl">
-            <h3 className="text-2xl font-bold text-blue-900 mb-8">Send us a Message</h3>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-slate-700 text-sm font-bold mb-2">Name</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Your Name" />
+            {success ? (
+              <div className="text-center py-12">
+                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-                <div>
-                  <label className="block text-slate-700 text-sm font-bold mb-2">Email</label>
-                  <input type="email" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="your@email.com" />
-                </div>
+                <h3 className="text-2xl font-bold text-blue-900 mb-2">Message Sent!</h3>
+                <p className="text-slate-600 mb-8">We have received your message and will get back to you soon.</p>
+                <button 
+                  onClick={() => setSuccess(false)}
+                  className="text-blue-900 font-bold hover:underline"
+                >
+                  Send another message
+                </button>
               </div>
-              <div>
-                <label className="block text-slate-700 text-sm font-bold mb-2">Subject</label>
-                <input type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Inquiry about..." />
-              </div>
-              <div>
-                <label className="block text-slate-700 text-sm font-bold mb-2">Message</label>
-                <textarea rows={4} className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="How can we help you?"></textarea>
-              </div>
-              <button className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold rounded-xl transition-all shadow-lg shadow-amber-200 active:scale-[0.98]">
-                Send Message
-              </button>
-            </form>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold text-blue-900 mb-8">Send us a Message</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-slate-700 text-sm font-bold mb-2">Name</label>
+                      <input name="name" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Your Name" />
+                    </div>
+                    <div>
+                      <label className="block text-slate-700 text-sm font-bold mb-2">Email</label>
+                      <input name="email" required type="email" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="your@email.com" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-slate-700 text-sm font-bold mb-2">Subject</label>
+                    <input name="subject" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Inquiry about..." />
+                  </div>
+                  <div>
+                    <label className="block text-slate-700 text-sm font-bold mb-2">Message</label>
+                    <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="How can we help you?"></textarea>
+                  </div>
+                  
+                  {error && (
+                    <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">
+                      {error}
+                    </div>
+                  )}
+
+                  <button 
+                    disabled={loading}
+                    type="submit"
+                    className={`w-full py-4 bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold rounded-xl transition-all shadow-lg shadow-amber-200 active:scale-[0.98] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  >
+                    {loading ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -89,4 +143,3 @@ const Contact: React.FC = () => {
 };
 
 export default Contact;
-
