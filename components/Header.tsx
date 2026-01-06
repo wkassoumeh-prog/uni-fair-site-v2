@@ -51,13 +51,15 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
               {link.name}
             </a>
           ))}
-          <button className={`px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 border-2 ${
+          <a
+            href="#registration"
+            className={`px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 border-2 ${
             isScrolled 
               ? 'bg-blue-900 border-blue-900 text-white hover:bg-transparent hover:text-blue-900' 
               : 'bg-white border-white text-blue-900 hover:bg-transparent hover:text-white'
           }`}>
             REGISTER NOW
-          </button>
+          </a>
         </nav>
 
         {/* Mobile Menu Icon */}

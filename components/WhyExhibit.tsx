@@ -120,9 +120,9 @@ const WhyExhibit: React.FC = () => {
               </p>
             </div>
             <div className="lg:w-1/3 mt-10 lg:mt-0 text-center lg:text-right">
-              <button className="bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold px-8 py-4 rounded-full transition-colors inline-block whitespace-nowrap">
+              <a href="#registration" className="bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold px-8 py-4 rounded-full transition-colors inline-block whitespace-nowrap">
                 Join as Exhibitor
-              </button>
+              </a>
             </div>
           </div>
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-blue-800 rounded-full opacity-50"></div>
