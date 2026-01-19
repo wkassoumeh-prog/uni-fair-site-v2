@@ -9,7 +9,8 @@ const About: React.FC = () => {
           <div className="lg:w-1/2">
             <div className="relative">
               <img 
-                src="https://picsum.photos/seed/edu/800/600" 
+                // src="https://picsum.photos/seed/edu/800/600"
+                src="/images/people-fair.jpg"
                 alt="Students interacting" 
                 className="rounded-2xl shadow-2xl z-10 relative"
               />
@@ -25,7 +26,7 @@ const About: React.FC = () => {
             </h2>
             <div className="space-y-6 text-slate-600 leading-relaxed text-lg">
               <p>
-              CAREER EXPO SYRIA is the first educational exhibition of its kind in Syria, bringing together local and international universities, online universities, institutes, training centers, and e-learning platforms in one place
+              CAREER EXPO SYRIA is the first educational exhibition of its kind in Syria, bringing together local and international universities, online universities, institutes, training centers, and e-learning platforms in one place.
               </p>
               <p>
               The exhibition aims to create a direct connection between students and educational institutions, helping them make informed academic and career decisions through face-to-face interaction.

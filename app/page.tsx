@@ -11,6 +11,7 @@ import Sponsors from '../components/Sponsors';
 import FAQ from '../components/FAQ';
 import Contact from '../components/Contact';
 import Stats from '../components/Stats';
+import Countdown from '../components/Countdown';
 import FeaturedUniversities from '../components/FeaturedUniversities';
 import Footer from '../components/Footer';
 
@@ -35,12 +36,13 @@ export default function Home() {
       <Header isScrolled={isScrolled} />
       <main className="flex-grow">
         <Hero />
-        <Stats />
+        {/* <Stats /> */}
+        <Countdown />
         <About />
         <WhyExhibit />
         <ForVisitors />
         <ExhibitorRegistration />
-        <FeaturedUniversities />
+        {/* <FeaturedUniversities /> */}
         <Sponsors />
         <FAQ />
         <Contact />

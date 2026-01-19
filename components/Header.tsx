@@ -23,28 +23,22 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
       }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
+        <div className={`flex items-center space-x-2`}>
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <div className={`w-20 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors duration-300 ${
-            isScrolled ? 'bg-blue-900 text-white' : 'bg-white text-blue-900'
-          }`}>
-            CES 
-          </div>
-          <span className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
-            isScrolled ? 'text-blue-900' : 'text-white'
-          }`}>
-            {/* Career Expo Syria 2026 */}
-            Career Expo <span className="text-amber-500">Syria 2026</span>
-          </span>
+            <img
+              src={isScrolled ? "/logo/logo-full.png" : "/logo/logo-full-w.png"}
+              alt="Career Expo Syria 2026 Logo"
+              className="object-contain h-24"
+            />
         </div>
-
+ 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className={`text-sm font-semibold uppercase tracking-wider transition-colors duration-300 hover:text-amber-500 ${
+              className={`text-base font-semibold uppercase tracking-wider transition-colors duration-300 hover:text-amber-500 ${
                 isScrolled ? 'text-slate-700' : 'text-white'
               }`}
             >
@@ -53,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
           ))}
           <a
             href="#registration"
-            className={`px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 border-2 ${
+            className={`px-6 py-2 rounded-full font-bold text-base items-center justify-center transition-all duration-300 border-2 ${
             isScrolled 
               ? 'bg-blue-900 border-blue-900 text-white hover:bg-transparent hover:text-blue-900' 
               : 'bg-white border-white text-blue-900 hover:bg-transparent hover:text-white'
