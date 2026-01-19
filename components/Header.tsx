@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface HeaderProps {
   isScrolled: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const navLinks = [
     { name: 'About', href: '#about' },
     { name: 'Exhibitors', href: '#why-exhibit' },
@@ -46,12 +48,12 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className={`text-base font-semibold uppercase tracking-wider transition-colors duration-300 hover:text-amber-500 ${
+              className={`text-sm xl:text-base font-semibold uppercase tracking-wider transition-colors duration-300 hover:text-amber-500 ${
                 isScrolled ? 'text-slate-700' : 'text-white'
               }`}
             >
@@ -60,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
           ))}
           <a
             href="#registration"
-            className={`px-6 py-2 rounded-full font-bold text-base items-center justify-center transition-all duration-300 border-2 ${
+            className={`px-6 py-2 rounded-full font-bold text-sm xl:text-base flex items-center justify-center transition-all duration-300 border-2 ${
               isScrolled 
                 ? 'bg-blue-900 border-blue-900 text-white hover:bg-transparent hover:text-blue-900' 
                 : 'bg-white border-white text-blue-900 hover:bg-transparent hover:text-white'
@@ -71,12 +73,56 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
         </nav>
 
         {/* Mobile Menu Icon */}
-        <div className="md:hidden">
-          <button className={isScrolled ? 'text-blue-900' : 'text-white'}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
+        <div className="lg:hidden">
+          <button 
+            className={isScrolled ? 'text-blue-900' : 'text-white'}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            )}
           </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      <div className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+        isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className={`px-6 pt-2 pb-6 space-y-2 shadow-xl ${
+          isScrolled ? 'bg-white' : 'bg-blue-900/95 backdrop-blur-md'
+        }`}>
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`block py-3 text-lg font-semibold uppercase tracking-wider border-b border-white/10 ${
+                isScrolled ? 'text-slate-700' : 'text-white'
+              }`}
+            >
+              {link.name}
+            </a>
+          ))}
+          <div className="pt-4">
+            <a
+              href="#registration"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`block w-full text-center px-6 py-4 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
+                isScrolled 
+                  ? 'bg-blue-900 border-blue-900 text-white' 
+                  : 'bg-white border-white text-blue-900'
+              }`}
+            >
+              REGISTER NOW
+            </a>
+          </div>
         </div>
       </div>
     </header>
