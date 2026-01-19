@@ -17,14 +17,14 @@ const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center text-white">
-        <h2 className="text-amber-400 text-lg md:text-xl font-bold tracking-widest uppercase mb-4 animate-fade-in">
-        Connecting Students with Their Future
-        </h2>
-        <h1 className="text-5xl md:text-8xl font-bold mb-6 leading-tight drop-shadow-2xl">
+        <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-tight drop-shadow-2xl">
           Career Expo <br />
           <span className="text-amber-500">Syria 2026</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-lg md:text-xl mb-10 text-slate-100 font-light leading-relaxed">
+        <h2 className="text-amber-400 text-lg md:text-lg font-bold tracking-widest uppercase mb-4 animate-fade-in">
+        Connecting Students with Their Future
+        </h2>
+        <p className="max-w-2xl mx-auto text-lg md:text-lg mb-10 text-slate-100 font-light leading-relaxed">
           Connect with world-class institutions, explore diverse programs, and find your perfect academic path at the largest education event of the year.
         </p>
         

@@ -37,32 +37,32 @@ const Countdown: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-blue-900 py-16 md:py-20">
+    <div className="bg-blue-900 py-10 md:py-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center">
           {/* Title */}
-          <h2 className="text-white font-bold tracking-wider uppercase text-4xl md:text-5xl mb-8 text-center leading-tight">
+          <h2 className="text-white font-bold tracking-wider uppercase text-3xl md:text-4xl mb-4 text-center leading-tight">
             CAREER EXPO SYRIA
           </h2>
           
           {/* Date */}
-          <div className="text-white text-2xl md:text-3xl font-semibold mb-10 text-center">
+          <div className="text-white text-xl md:text-2xl font-semibold mb-6 text-center">
             April 15-17, 2026
           </div>
           
           {/* Begins in label */}
-          <div className="text-blue-100 text-lg md:text-xl font-medium mb-8 tracking-wide">
+          <div className="text-blue-100/80 text-sm md:text-base font-medium mb-6 tracking-widest uppercase">
             Begins in
           </div>
           
           {/* Countdown Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full max-w-4xl">
-            {(['Days', 'Hours', 'Minutes', 'Seconds'] as const).map((label, idx) => (
-              <div key={label} className="text-center">
-                <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-amber-500 mb-3 leading-none">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-3xl">
+            {(['Days', 'Hours', 'Minutes', 'Seconds'] as const).map((label) => (
+              <div key={label} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 md:p-6 text-center shadow-lg transform transition-transform hover:scale-105">
+                <div className="text-4xl md:text-5xl font-extrabold text-amber-400 mb-1 tabular-nums">
                   {String(timeLeft[label]).padStart(2, '0')}
                 </div>
-                <div className="text-blue-100 uppercase tracking-widest text-xs md:text-sm font-semibold">
+                <div className="text-blue-200 uppercase tracking-widest text-[10px] md:text-xs font-bold">
                   {label}
                 </div>
               </div>
