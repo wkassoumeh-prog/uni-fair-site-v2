@@ -45,7 +45,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1">Phone Numbers</h4>
-                  <p className="text-blue-200">(To be added)</p>
+                  <p className="text-blue-200">+963 11 3344805</p>
                 </div>
               </div>
 
@@ -57,7 +57,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1">Email Address</h4>
-                  <p className="text-blue-200">(To be added)</p>
+                  <p className="text-blue-200">info@careerexpo-syria.com</p>
                 </div>
               </div>
 
@@ -69,7 +69,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1">Facebook</h4>
-                  <p className="text-blue-200">(Page link)</p>
+                  <p className="text-blue-200">https://www.facebook.com/profile.php?id=61586545665487</p>
                 </div>
               </div>
             </div>

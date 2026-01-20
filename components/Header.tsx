@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
     { name: 'Exhibitors', href: '#why-exhibit' },
     { name: 'Visitors', href: '#for-visitors' },
     { name: 'FAQ', href: '#faq' },
-    { name: 'Contact', href: '#contact' },
+    // { name: 'Contact us', href: '#contact' },
   ];
 
   return (
@@ -61,14 +61,14 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
             </a>
           ))}
           <a
-            href="#registration"
+            href="#contact"
             className={`px-6 py-2 rounded-full font-bold text-sm xl:text-base flex items-center justify-center transition-all duration-300 border-2 ${
               isScrolled 
                 ? 'bg-blue-900 border-blue-900 text-white hover:bg-transparent hover:text-blue-900' 
                 : 'bg-white border-white text-blue-900 hover:bg-transparent hover:text-white'
             }`}
           >
-            REGISTER NOW
+            CONTACT US
           </a>
         </nav>
 
@@ -120,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
                   : 'bg-white border-white text-blue-900'
               }`}
             >
-              REGISTER NOW
+              CONTACT US
             </a>
           </div>
         </div>

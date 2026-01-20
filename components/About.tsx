@@ -10,7 +10,7 @@ const About: React.FC = () => {
             <div className="relative">
               <img 
                 // src="https://picsum.photos/seed/edu/800/600"
-                src="/images/people-fair.jpg"
+                src="/images/career-expo-hall.png"
                 alt="Students interacting" 
                 className="rounded-2xl shadow-2xl z-10 relative"
               />

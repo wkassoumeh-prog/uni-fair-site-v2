@@ -23,7 +23,7 @@ const Sponsors: React.FC = () => {
             ))}
           </div>
           <div className="mt-12 text-center">
-            <p className="text-slate-500 italic">Sponsors’ and media partners’ logos will be displayed in this section.</p>
+            {/* <p className="text-slate-500 italic">Sponsors’ and media partners’ logos will be displayed in this section.</p> */}
           </div>
         </div>
       </div>

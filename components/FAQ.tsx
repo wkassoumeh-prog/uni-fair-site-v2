@@ -11,7 +11,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Is participation paid?",
-      answer: "Participation for educational institutions is paid. Visitor entry details will be announced later."
+      answer: "Visitor entry is free. Participation for educational institutions is paid."
     },
     {
       question: "Can students register with universities during the exhibition?",
@@ -23,7 +23,11 @@ const FAQ: React.FC = () => {
     },
     {
       question: "What are the visiting hours?",
-      answer: "Detailed visiting hours will be announced prior to the exhibition."
+      answer: "Visting hours 10 AM – 8 PM."
+    },
+    {
+      question: "Is there transportation to the exhibition venue?",
+      answer: "Yes, there is free round-the-clock transportation from several areas in the city of Damascus."
     }
   ];
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const COUNTDOWN_DATE = new Date('2026-04-15T00:00:00+03:00').getTime();
+const COUNTDOWN_DATE = new Date('2026-07-16T10:00:00+03:00').getTime();
 
 const Countdown: React.FC = () => {
   const calculateTimeLeft = () => {
@@ -47,7 +47,7 @@ const Countdown: React.FC = () => {
           
           {/* Date */}
           <div className="text-white text-xl md:text-2xl font-semibold mb-6 text-center">
-            April 15-17, 2026
+            July 16-18, 2026 &bull; 10:00 AM
           </div>
           
           {/* Begins in label */}

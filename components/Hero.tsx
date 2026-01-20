@@ -30,11 +30,11 @@ const Hero: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           <a href="#registration" className="px-10 py-4 bg-amber-500 text-blue-900 font-bold rounded-full text-lg hover:bg-amber-400 transition-all transform hover:scale-105 shadow-xl">
-            Register to Attend
+              JOIN AS EXHIBITOR
           </a>
-          <button className="px-10 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-blue-900 transition-all">
-            View Schedule
-          </button>
+          {/* <button className="px-10 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-blue-900 transition-all"> */}
+          {/* View Schedule */}
+          {/* </button> */}
         </div>
       </div>
 
