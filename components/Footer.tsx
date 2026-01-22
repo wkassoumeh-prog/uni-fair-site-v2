@@ -4,7 +4,7 @@ import React from 'react';
 const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-900 text-white py-20">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 border-b border-slate-800 pb-16">
           {/* Brand Info */}
           <div>
@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
               <img src="/logo/logo-small-w.png" alt="Career Expo Syria 2026 Logo" className="h-18" />
             </div>
             <p className="text-slate-400 leading-relaxed mb-6">
-              The world's largest gathering of universities and students. Shaping the futures of tomorrow's leaders since 2001.
+            Syria's largest gathering of universities and students. Shaping the futures of tomorrow's leaders.
             </p>
           </div>
 

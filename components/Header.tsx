@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
       */}
       <div className="container mx-auto px-6 flex justify-between items-center">
         
-        <div className="flex items-center">
+        <div className="flex items-center gap-y-4">
           {/* Logo */}
           {/* 4. MOVED SIZE CONTROL HERE:
               Instead of padding the header, we resize the logo.

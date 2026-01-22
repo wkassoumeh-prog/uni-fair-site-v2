@@ -1,0 +1,82 @@
+import React from 'react';
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="bg-slate-900 text-white py-20">
+      <div className="container mx-auto px-6 max-w-7xl">
+        
+        {/* Grid: 3 Columns, text aligned to left */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 text-left border-b border-slate-800 pb-16">
+          
+          {/* --- COLUMN 1: BRAND --- */}
+          <div className="flex flex-col items-start">
+            {/* Row 1: Logo (Fixed height for alignment) */}
+            <div className="h-24 flex items-center mb-4">
+               <img src="/logo/logo-small-w.png" alt="Logo" className="h-20" />
+            </div>
+            
+            {/* Row 2: Description */}
+            <p className="text-slate-400 leading-relaxed pr-6">
+              The world's largest gathering of universities and students. Shaping the futures of tomorrow's leaders since 2001.
+            </p>
+          </div>
+
+          {/* --- COLUMN 2: VENUE --- */}
+          <div className="flex flex-col items-start">
+            {/* Row 1: Header (Fixed height matches Logo) */}
+            <div className="h-24 flex items-center mb-4">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider border-b-2 border-amber-500 pb-2">
+                Event Venue
+              </h4>
+            </div>
+
+            {/* Row 2: Address & Dates */}
+            <div className="text-slate-400 space-y-4">
+              <div>
+                <p className="font-medium text-white mb-1">Damascus City of Exhibitions</p>
+                <p>Damascus City, Syria</p>
+              </div>
+              <div className="pt-2">
+                <p className="font-bold text-amber-500">Dates: July 16 – 18, 2026</p>
+              </div>
+            </div>
+          </div>
+
+          {/* --- COLUMN 3: CONTACT --- */}
+          <div className="flex flex-col items-start">
+            {/* Row 1: Header (Fixed height matches Logo) */}
+            <div className="h-24 flex items-center mb-4">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider border-b-2 border-amber-500 pb-2">
+                Contact Us
+              </h4>
+            </div>
+
+            {/* Row 2: Email & Phone */}
+            <ul className="space-y-4 text-slate-400">
+              <li className="flex flex-col items-start">
+                <span className="text-xs text-slate-500 uppercase tracking-widest mb-1">Email</span>
+                <span className="text-white hover:text-amber-500 transition-colors cursor-pointer">
+                  info@careerexpo-syria.com
+                </span>
+              </li>
+              <li className="flex flex-col items-start">
+                <span className="text-xs text-slate-500 uppercase tracking-widest mb-1">Phone</span>
+                <span className="text-white">
+                  +963 11 3344805
+                </span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Copyright Section */}
+        <div className="pt-10 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+          <p>© Career Expo Syria 2026. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
