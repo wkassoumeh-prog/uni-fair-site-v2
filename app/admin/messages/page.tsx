@@ -51,7 +51,7 @@ export default function AdminMessagesPage() {
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
   const [page, setPage] = useState(1);
 
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [selectedMsg, setSelectedMsg] = useState<MsgRow | null>(null);
 
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
@@ -130,8 +130,15 @@ export default function AdminMessagesPage() {
   async function setRowStatus(id: string, next: MsgRow["status"]) {
     setErrorMsg(null);
     const { error } = await supabase.from("contact_messages").update({ status: next }).eq("id", id);
-    if (error) setErrorMsg(error.message);
-    else setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: next } : r)));
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: next } : r)));
+      // Update selectedMsg if it's the same message
+      if (selectedMsg && selectedMsg.id === id) {
+        setSelectedMsg((prev) => (prev && prev.id === id ? { ...prev, status: next } : prev));
+      }
+    }
   }
 
   async function addMessageSeed() {
@@ -342,8 +349,8 @@ export default function AdminMessagesPage() {
       {exportError ? <div className="text-sm text-red-600">Export error: {exportError}</div> : null}
       {errorMsg ? <div className="text-sm text-red-600">Error: {errorMsg}</div> : null}
 
-      <div className="rounded-md border overflow-x-auto">
-        <table className="min-w-[1020px] w-full text-sm">
+      <div className="rounded-md border">
+        <table className="w-full text-sm">
           <thead className="border-b bg-gray-50">
             <tr>
               <th className="text-left font-medium px-3 py-2 w-[170px]">Created</th>
@@ -373,7 +380,10 @@ export default function AdminMessagesPage() {
             ) : (
               rows.map((r) => (
                 <tr key={r.id} className="border-b last:border-b-0 align-top">
-                  <td className="px-3 py-2 whitespace-nowrap">{new Date(r.created_at).toLocaleString()}</td>
+                    <td className="px-3 py-2 whitespace-nowrap">
+                      <div>{new Date(r.created_at).toLocaleDateString()}</div>
+                      <div>{new Date(r.created_at).toLocaleTimeString()}</div>
+                    </td>
 
                   <td className="px-3 py-2">
                     <span className="rounded-md border px-2 py-1 text-xs">{r.status}</span>
@@ -397,29 +407,28 @@ export default function AdminMessagesPage() {
 
                   <td className="px-3 py-2">{r.subject ?? <span className="opacity-50">—</span>}</td>
 
-                  <td className="px-3 py-2 max-w-[380px]">
-                    {openId === r.id ? (
-                      <div className="whitespace-pre-wrap">{r.message}</div>
-                    ) : (
-                      <div className="line-clamp-2">{r.message}</div>
-                    )}
+                  <td 
+                    className="px-3 py-2 max-w-[380px] cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => setSelectedMsg(r)}
+                    title="Click to view full message"
+                  >
+                    <div className="line-clamp-2">{r.message}</div>
                   </td>
 
                   <td className="px-3 py-2">
                     <div className="flex flex-wrap gap-2">
                       <button
                         className="rounded-md border px-2 py-1 text-xs"
-                        onClick={() => setOpenId(openId === r.id ? null : r.id)}
+                        onClick={() => setSelectedMsg(r)}
                       >
-                        {openId === r.id ? "Hide" : "View"}
+                        View
                       </button>
 
                       <button
                         className="rounded-md border px-2 py-1 text-xs"
-                        onClick={() => setRowStatus(r.id, "read")}
-                        disabled={r.status === "read"}
+                        onClick={() => setRowStatus(r.id, r.status === "read" ? "new" : "read")}
                       >
-                        Mark read
+                        {r.status === "read" ? "Mark unread" : "Mark read"}
                       </button>
 
                       <button
@@ -467,6 +476,103 @@ export default function AdminMessagesPage() {
           </button>
         </div>
       </div>
+
+      {selectedMsg && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div className="p-4 border-b flex items-center justify-between bg-gray-50 rounded-t-lg">
+              <h3 className="font-semibold text-gray-800">Message Details</h3>
+              <button 
+                onClick={() => setSelectedMsg(null)}
+                className="text-gray-500 hover:text-black transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Email-like Header Section */}
+              <div className="space-y-3 border-b pb-6">
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">From:</span>
+                  <span className="text-gray-900 font-semibold">{selectedMsg.name || "—"}</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">Email:</span>
+                  {selectedMsg.email ? (
+                    <a href={`mailto:${selectedMsg.email}`} className="text-blue-600 hover:underline">
+                      {selectedMsg.email}
+                    </a>
+                  ) : (
+                    <span className="text-gray-900">—</span>
+                  )}
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">Subject:</span>
+                  <span className="text-gray-900">{selectedMsg.subject || "—"}</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">Status:</span>
+                  <span className="px-2 py-0.5 rounded-full border text-xs bg-gray-50 text-gray-700 capitalize">
+                    {selectedMsg.status}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">Source:</span>
+                  <span className="px-2 py-0.5 rounded-full border text-xs bg-gray-50 text-gray-700 capitalize">
+                    {selectedMsg.source}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-gray-500 w-24 shrink-0 font-medium">Submitted:</span>
+                  <span className="text-gray-600 text-sm">
+                    {new Date(selectedMsg.created_at).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Message Section */}
+              <div className="space-y-2">
+                <h4 className="text-gray-500 font-medium">Message:</h4>
+                <div className="bg-gray-50 p-4 rounded-md text-gray-800 whitespace-pre-wrap leading-relaxed min-h-[100px]">
+                  {selectedMsg.message || <span className="text-gray-400 italic">No message provided</span>}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 border-t flex justify-between bg-gray-50 rounded-b-lg gap-3">
+              <div className="flex gap-2">
+                <button
+                  className="px-4 py-2 border rounded-md text-sm font-medium hover:bg-white transition-colors"
+                  onClick={() => {
+                    const newStatus = selectedMsg.status === "read" ? "new" : "read";
+                    setRowStatus(selectedMsg.id, newStatus);
+                    setSelectedMsg(prev => prev ? { ...prev, status: newStatus } : null);
+                  }}
+                >
+                  {selectedMsg.status === "read" ? "Mark as Unread" : "Mark as Read"}
+                </button>
+                <button
+                  className="px-4 py-2 border rounded-md text-sm font-medium hover:bg-white transition-colors disabled:opacity-50"
+                  onClick={() => {
+                    setRowStatus(selectedMsg.id, "archived");
+                    setSelectedMsg(prev => prev ? { ...prev, status: "archived" } : null);
+                  }}
+                  disabled={selectedMsg.status === "archived"}
+                >
+                  Archive
+                </button>
+              </div>
+              <button 
+                onClick={() => setSelectedMsg(null)}
+                className="px-6 py-2 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

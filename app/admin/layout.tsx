@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-4">
             <Link 
               href="/admin" 
-              className={`font-semibold text-xl text-black transition-colors ${
+              className={`font-semibold text-3xl text-black transition-colors ${
                 pathname === "/admin" ? "opacity-100" : "opacity-80 hover:opacity-100"
               }`}
             >
@@ -89,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
             <Link 
               href="/admin/registrations" 
-              className={`text-sm transition-colors hover:opacity-100 ${
+              className={`text-lg transition-colors hover:opacity-100 ${
                 pathname.startsWith("/admin/registrations") ? "opacity-100 font-medium text-black" : "opacity-80"
               }`}
             >
@@ -97,7 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
             <Link 
               href="/admin/messages" 
-              className={`text-sm transition-colors hover:opacity-100 ${
+              className={`text-lg transition-colors hover:opacity-100 ${
                 pathname.startsWith("/admin/messages") ? "opacity-100 font-medium text-black" : "opacity-80"
               }`}
             >
@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
             <Link 
               href="/admin/cms" 
-              className={`text-sm transition-colors hover:opacity-100 ${
+              className={`text-lg transition-colors hover:opacity-100 ${
                 pathname.startsWith("/admin/cms") ? "opacity-100 font-medium text-black" : "opacity-80"
               }`}
             >
@@ -114,7 +114,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <button
-            className="text-sm underline opacity-80 hover:opacity-100"
+            className="text-lg underline opacity-80 hover:opacity-100"
             onClick={async () => {
               await supabase.auth.signOut();
               router.replace("/admin/login");
