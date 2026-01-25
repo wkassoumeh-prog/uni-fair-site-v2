@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+// ============================================================================
+// TYPES & CONSTANTS
+// ============================================================================
+
 type MsgRow = {
   id: string;
   created_at: string;
@@ -18,7 +22,14 @@ type MsgRow = {
 const PAGE_SIZE = 20;
 const EXPORT_BATCH_SIZE = 1000;
 
-function csvEscape(value: unknown) {
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Escapes CSV values by wrapping in quotes if needed and escaping internal quotes
+ */
+function csvEscape(value: unknown): string {
   if (value === null || value === undefined) return "";
   const s = String(value);
   const needsQuotes = /[",\n\r]/.test(s);
@@ -26,7 +37,10 @@ function csvEscape(value: unknown) {
   return needsQuotes ? `"${escaped}"` : escaped;
 }
 
-function downloadTextFile(filename: string, content: string, mime = "text/plain") {
+/**
+ * Triggers a browser download of a text file
+ */
+function downloadTextFile(filename: string, content: string, mime = "text/plain"): void {
   const blob = new Blob([content], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -38,42 +52,124 @@ function downloadTextFile(filename: string, content: string, mime = "text/plain"
   URL.revokeObjectURL(url);
 }
 
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 export default function AdminMessagesPage() {
+  // ========================================================================
+  // STATE MANAGEMENT
+  // ========================================================================
+
+  // Data state
   const [rows, setRows] = useState<MsgRow[]>([]);
   const [total, setTotal] = useState(0);
-
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Filter and pagination state
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<"all" | MsgRow["status"]>("all");
   const [source, setSource] = useState<"all" | MsgRow["source"]>("all");
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
   const [page, setPage] = useState(1);
 
+  // UI state
   const [selectedMsg, setSelectedMsg] = useState<MsgRow | null>(null);
-
-  const [exporting, setExporting] = useState(false);
-  const [exportError, setExportError] = useState<string | null>(null);
-
-  // add/delete
   const [showAdd, setShowAdd] = useState(false);
   const [savingNew, setSavingNew] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [reloadTick, setReloadTick] = useState(0);
 
+  // Bulk selection state
+  const [selected, setSelected] = useState<Record<string, boolean>>({});
+
+  // Export state
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
+  // Add form state
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newSubject, setNewSubject] = useState("");
   const [newMessage, setNewMessage] = useState("");
 
+  // ========================================================================
+  // COMPUTED VALUES
+  // ========================================================================
+
   const totalPages = useMemo(() => Math.max(1, Math.ceil(total / PAGE_SIZE)), [total]);
 
+  // Get array of selected message IDs
+  const selectedIds = useMemo(
+    () => rows.filter((r) => selected[r.id]).map((r) => r.id),
+    [rows, selected]
+  );
+
+  // Check if all visible rows are selected
+  const allSelected = rows.length > 0 && selectedIds.length === rows.length;
+
+  // ========================================================================
+  // EFFECTS
+  // ========================================================================
+
+  // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
   }, [q, status, source, sort]);
 
-  function buildSearchOr(term: string) {
+  // Load messages when filters, pagination, or reload trigger changes
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setErrorMsg(null);
+
+      const from = (page - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+
+      let query = supabase
+        .from("contact_messages")
+        .select("id, created_at, name, email, subject, message, status, source, resend_message_id", {
+          count: "exact",
+        });
+
+      query = applyFilters(query);
+      query = query.order("created_at", { ascending: sort === "oldest" }).range(from, to);
+
+      const { data, error, count } = await query;
+
+      if (cancelled) return;
+
+      if (error) {
+        setErrorMsg(error.message);
+        setRows([]);
+        setTotal(0);
+      } else {
+        setRows((data as MsgRow[]) ?? []);
+        setTotal(count ?? 0);
+      }
+
+      // Clear selection on reload
+      setSelected({});
+      setLoading(false);
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [page, q, status, source, sort, reloadTick]);
+
+  // ========================================================================
+  // FILTER FUNCTIONS
+  // ========================================================================
+
+  /**
+   * Builds a Supabase OR query for searching across multiple fields
+   */
+  function buildSearchOr(term: string): string {
     const escaped = term.replace(/%/g, "\\%").replace(/_/g, "\\_");
     const pattern = `%${escaped}%`;
     return [
@@ -84,6 +180,9 @@ export default function AdminMessagesPage() {
     ].join(",");
   }
 
+  /**
+   * Applies all active filters to a Supabase query
+   */
   function applyFilters(query: any) {
     if (status !== "all") query = query.eq("status", status);
     if (source !== "all") query = query.eq("source", source);
@@ -92,41 +191,36 @@ export default function AdminMessagesPage() {
     return query;
   }
 
-  async function load() {
-    setLoading(true);
-    setErrorMsg(null);
+  // ========================================================================
+  // SELECTION FUNCTIONS
+  // ========================================================================
 
-    const from = (page - 1) * PAGE_SIZE;
-    const to = from + PAGE_SIZE - 1;
-
-    let query = supabase
-      .from("contact_messages")
-      .select("id, created_at, name, email, subject, message, status, source, resend_message_id", {
-        count: "exact",
-      });
-
-    query = applyFilters(query);
-    query = query.order("created_at", { ascending: sort === "oldest" }).range(from, to);
-
-    const { data, error, count } = await query;
-
-    if (error) {
-      setErrorMsg(error.message);
-      setRows([]);
-      setTotal(0);
-    } else {
-      setRows((data as MsgRow[]) ?? []);
-      setTotal(count ?? 0);
-    }
-
-    setLoading(false);
+  /**
+   * Toggle selection of a single message
+   */
+  function toggleOne(id: string) {
+    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, q, status, source, sort, reloadTick]);
+  /**
+   * Toggle selection of all visible messages
+   */
+  function toggleAll() {
+    setSelected(() => {
+      if (allSelected) return {};
+      const next: Record<string, boolean> = {};
+      rows.forEach((r) => (next[r.id] = true));
+      return next;
+    });
+  }
 
+  // ========================================================================
+  // MESSAGE CRUD OPERATIONS
+  // ========================================================================
+
+  /**
+   * Updates the status of a single message
+   */
   async function setRowStatus(id: string, next: MsgRow["status"]) {
     setErrorMsg(null);
     const { error } = await supabase.from("contact_messages").update({ status: next }).eq("id", id);
@@ -141,6 +235,36 @@ export default function AdminMessagesPage() {
     }
   }
 
+  /**
+   * Updates the status of multiple messages (bulk operation)
+   */
+  async function setBulkStatus(next: MsgRow["status"]) {
+    if (selectedIds.length === 0) return;
+
+    setErrorMsg(null);
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ status: next })
+      .in("id", selectedIds);
+
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setRows((prev) =>
+        prev.map((r) => (selectedIds.includes(r.id) ? { ...r, status: next } : r))
+      );
+      // Update selectedMsg if it's in the selection
+      if (selectedMsg && selectedIds.includes(selectedMsg.id)) {
+        setSelectedMsg((prev) => (prev ? { ...prev, status: next } : prev));
+      }
+      setSelected({});
+      setReloadTick((t) => t + 1);
+    }
+  }
+
+  /**
+   * Adds a new test message (seed data)
+   */
   async function addMessageSeed() {
     if (!newMessage.trim()) {
       setErrorMsg("Message is required.");
@@ -177,6 +301,9 @@ export default function AdminMessagesPage() {
     setReloadTick((t) => t + 1);
   }
 
+  /**
+   * Deletes a single message
+   */
   async function deleteMessage(id: string) {
     const ok = window.confirm("Delete this message?");
     if (!ok) return;
@@ -191,6 +318,33 @@ export default function AdminMessagesPage() {
     setReloadTick((t) => t + 1);
   }
 
+  /**
+   * Deletes multiple selected messages (bulk operation)
+   */
+  async function deleteSelected() {
+    if (selectedIds.length === 0) return;
+
+    const ok = window.confirm(`Delete ${selectedIds.length} selected message(s)?`);
+    if (!ok) return;
+
+    setErrorMsg(null);
+    const { error } = await supabase.from("contact_messages").delete().in("id", selectedIds);
+
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setSelected({});
+      setReloadTick((t) => t + 1);
+    }
+  }
+
+  // ========================================================================
+  // EXPORT FUNCTION
+  // ========================================================================
+
+  /**
+   * Exports all filtered messages to CSV
+   */
   async function exportCsv() {
     setExporting(true);
     setExportError(null);
@@ -246,14 +400,20 @@ export default function AdminMessagesPage() {
     }
   }
 
+  // ========================================================================
+  // RENDER
+  // ========================================================================
+
   return (
     <div className="space-y-4">
+      {/* Header Section */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Contact messages</h1>
           <p className="text-sm opacity-70">{loading ? "Loading…" : `${total} total`}</p>
         </div>
 
+        {/* Search and Filter Controls */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <input
             className="w-full sm:w-72 rounded-md border px-3 py-2"
@@ -291,21 +451,48 @@ export default function AdminMessagesPage() {
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
           </select>
-
-          <button className="rounded-md border px-3 py-2 text-sm" onClick={() => setShowAdd((v) => !v)}>
-            {showAdd ? "Close" : "Add"}
-          </button>
-
-          <button
-            className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
-            onClick={exportCsv}
-            disabled={exporting || loading}
-          >
-            {exporting ? "Exporting…" : "Export CSV"}
-          </button>
         </div>
       </div>
 
+      {/* Action Buttons Row */}
+      <div className="flex flex-wrap gap-2 items-center">
+        <button className="rounded-md border px-3 py-2 text-sm" onClick={() => setShowAdd((v) => !v)}>
+          {showAdd ? "Close" : "Add new message"}
+        </button>
+
+        <button
+          className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
+          onClick={deleteSelected}
+          disabled={selectedIds.length === 0 || loading}
+          title={selectedIds.length === 0 ? "Select messages first" : ""}
+        >
+          Delete selected ({selectedIds.length})
+        </button>
+
+        <button
+          className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
+          onClick={() => {
+            // Determine target status: if all selected are read, mark unread; otherwise mark read
+            const selectedRows = rows.filter((r) => selectedIds.includes(r.id));
+            const allRead = selectedRows.length > 0 && selectedRows.every((r) => r.status === "read");
+            setBulkStatus(allRead ? "new" : "read");
+          }}
+          disabled={selectedIds.length === 0 || loading}
+          title={selectedIds.length === 0 ? "Select messages first" : ""}
+        >
+          Mark {rows.filter((r) => selectedIds.includes(r.id)).every((r) => r.status === "read") ? "unread" : "read"} ({selectedIds.length})
+        </button>
+
+        <button
+          className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
+          onClick={exportCsv}
+          disabled={exporting || loading}
+        >
+          {exporting ? "Exporting…" : "Export CSV"}
+        </button>
+      </div>
+
+      {/* Add Message Form */}
       {showAdd ? (
         <div className="rounded-md border p-4 space-y-3">
           <div className="grid gap-3 sm:grid-cols-2">
@@ -346,13 +533,24 @@ export default function AdminMessagesPage() {
         </div>
       ) : null}
 
+      {/* Error Messages */}
       {exportError ? <div className="text-sm text-red-600">Export error: {exportError}</div> : null}
       {errorMsg ? <div className="text-sm text-red-600">Error: {errorMsg}</div> : null}
 
+      {/* Messages Table */}
       <div className="rounded-md border">
         <table className="w-full text-sm">
           <thead className="border-b bg-gray-50">
             <tr>
+              <th className="text-left font-medium px-3 py-2 w-[52px]">
+                <input
+                  type="checkbox"
+                  checked={allSelected}
+                  onChange={toggleAll}
+                  disabled={rows.length === 0 || loading}
+                  aria-label="Select all"
+                />
+              </th>
               <th className="text-left font-medium px-3 py-2 w-[170px]">Created</th>
               <th className="text-left font-medium px-3 py-2 w-[120px]">Status</th>
               <th className="text-left font-medium px-3 py-2 w-[120px]">Source</th>
@@ -367,23 +565,32 @@ export default function AdminMessagesPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td className="px-3 py-4 opacity-70" colSpan={8}>
+                <td className="px-3 py-4 opacity-70" colSpan={9}>
                   Loading…
                 </td>
               </tr>
             ) : rows.length === 0 ? (
               <tr>
-                <td className="px-3 py-4 opacity-70" colSpan={8}>
+                <td className="px-3 py-4 opacity-70" colSpan={9}>
                   No results.
                 </td>
               </tr>
             ) : (
               rows.map((r) => (
                 <tr key={r.id} className="border-b last:border-b-0 align-top">
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <div>{new Date(r.created_at).toLocaleDateString()}</div>
-                      <div>{new Date(r.created_at).toLocaleTimeString()}</div>
-                    </td>
+                  <td className="px-3 py-2">
+                    <input
+                      type="checkbox"
+                      checked={!!selected[r.id]}
+                      onChange={() => toggleOne(r.id)}
+                      aria-label="Select row"
+                    />
+                  </td>
+
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    <div>{new Date(r.created_at).toLocaleDateString()}</div>
+                    <div>{new Date(r.created_at).toLocaleTimeString()}</div>
+                  </td>
 
                   <td className="px-3 py-2">
                     <span className="rounded-md border px-2 py-1 text-xs">{r.status}</span>
@@ -407,7 +614,7 @@ export default function AdminMessagesPage() {
 
                   <td className="px-3 py-2">{r.subject ?? <span className="opacity-50">—</span>}</td>
 
-                  <td 
+                  <td
                     className="px-3 py-2 max-w-[380px] cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => setSelectedMsg(r)}
                     title="Click to view full message"
@@ -455,6 +662,7 @@ export default function AdminMessagesPage() {
         </table>
       </div>
 
+      {/* Pagination */}
       <div className="flex items-center justify-between">
         <p className="text-xs opacity-70">
           Page {page} of {totalPages}
@@ -477,19 +685,20 @@ export default function AdminMessagesPage() {
         </div>
       </div>
 
+      {/* Message Detail Modal */}
       {selectedMsg && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
             <div className="p-4 border-b flex items-center justify-between bg-gray-50 rounded-t-lg">
               <h3 className="font-semibold text-gray-800">Message Details</h3>
-              <button 
+              <button
                 onClick={() => setSelectedMsg(null)}
                 className="text-gray-500 hover:text-black transition-colors"
               >
                 ✕
               </button>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* Email-like Header Section */}
               <div className="space-y-3 border-b pb-6">
@@ -547,7 +756,7 @@ export default function AdminMessagesPage() {
                   onClick={() => {
                     const newStatus = selectedMsg.status === "read" ? "new" : "read";
                     setRowStatus(selectedMsg.id, newStatus);
-                    setSelectedMsg(prev => prev ? { ...prev, status: newStatus } : null);
+                    setSelectedMsg((prev) => (prev ? { ...prev, status: newStatus } : null));
                   }}
                 >
                   {selectedMsg.status === "read" ? "Mark as Unread" : "Mark as Read"}
@@ -556,14 +765,14 @@ export default function AdminMessagesPage() {
                   className="px-4 py-2 border rounded-md text-sm font-medium hover:bg-white transition-colors disabled:opacity-50"
                   onClick={() => {
                     setRowStatus(selectedMsg.id, "archived");
-                    setSelectedMsg(prev => prev ? { ...prev, status: "archived" } : null);
+                    setSelectedMsg((prev) => (prev ? { ...prev, status: "archived" } : null));
                   }}
                   disabled={selectedMsg.status === "archived"}
                 >
                   Archive
                 </button>
               </div>
-              <button 
+              <button
                 onClick={() => setSelectedMsg(null)}
                 className="px-6 py-2 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors"
               >

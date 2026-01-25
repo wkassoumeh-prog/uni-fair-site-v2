@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+// ============================================================================
+// TYPES & CONSTANTS
+// ============================================================================
+
 type SponsorRow = {
   id: string;
   created_at: string;
@@ -14,44 +18,62 @@ type SponsorRow = {
   source: "seed" | "website";
 };
 
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 export default function SponsorsCmsPage() {
+  // ========================================================================
+  // STATE MANAGEMENT
+  // ========================================================================
+
+  // Data state
   const [rows, setRows] = useState<SponsorRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [seeding, setSeeding] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // add form
+  // Add form state
   const [name, setName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [sortOrder, setSortOrder] = useState<number>(100);
   const [published, setPublished] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [seeding, setSeeding] = useState(false);
 
-  // selection (bulk delete)
+  // Bulk selection state
   const [selected, setSelected] = useState<Record<string, boolean>>({});
 
+  // ========================================================================
+  // COMPUTED VALUES
+  // ========================================================================
+
+  // Get array of selected sponsor IDs
   const selectedIds = useMemo(
     () => rows.filter((r) => selected[r.id]).map((r) => r.id),
     [rows, selected]
   );
 
+  // Check if all visible rows are selected
   const allSelected = rows.length > 0 && selectedIds.length === rows.length;
 
-  function toggleOne(id: string) {
-    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
-  }
+  // ========================================================================
+  // EFFECTS
+  // ========================================================================
 
-  function toggleAll() {
-    setSelected(() => {
-      if (allSelected) return {};
-      const next: Record<string, boolean> = {};
-      rows.forEach((r) => (next[r.id] = true));
-      return next;
-    });
-  }
+  // Load sponsors on mount
+  useEffect(() => {
+    load();
+  }, []);
 
+  // ========================================================================
+  // DATA LOADING
+  // ========================================================================
+
+  /**
+   * Loads all sponsors from the database, ordered by sort_order then created_at
+   */
   async function load() {
     setLoading(true);
     setErrorMsg(null);
@@ -74,10 +96,36 @@ export default function SponsorsCmsPage() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    load();
-  }, []);
+  // ========================================================================
+  // SELECTION FUNCTIONS
+  // ========================================================================
 
+  /**
+   * Toggle selection of a single sponsor
+   */
+  function toggleOne(id: string) {
+    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  /**
+   * Toggle selection of all sponsors
+   */
+  function toggleAll() {
+    setSelected(() => {
+      if (allSelected) return {};
+      const next: Record<string, boolean> = {};
+      rows.forEach((r) => (next[r.id] = true));
+      return next;
+    });
+  }
+
+  // ========================================================================
+  // CRUD OPERATIONS
+  // ========================================================================
+
+  /**
+   * Adds a new sponsor to the database
+   */
   async function addSponsor() {
     setSaving(true);
     setMsg(null);
@@ -115,6 +163,9 @@ export default function SponsorsCmsPage() {
     setSaving(false);
   }
 
+  /**
+   * Updates a sponsor's fields in the database
+   */
   async function updateSponsor(id: string, patch: Partial<SponsorRow>) {
     setMsg(null);
     setErrorMsg(null);
@@ -128,6 +179,9 @@ export default function SponsorsCmsPage() {
     }
   }
 
+  /**
+   * Deletes a single sponsor from the database
+   */
   async function removeSponsor(id: string) {
     const ok = window.confirm("Delete this sponsor?");
     if (!ok) return;
@@ -149,22 +203,26 @@ export default function SponsorsCmsPage() {
     }
   }
 
+  /**
+   * Seeds sponsors from the sponsors_examples table
+   * @param replace - If true, replaces all existing sponsors; if false, merges (upserts)
+   */
   async function seedFromExamples({ replace }: { replace: boolean }) {
     setSeeding(true);
     setMsg(null);
     setErrorMsg(null);
-  
-    // 1) fetch examples
+
+    // 1) Fetch examples from sponsors_examples table
     const { data: examples, error: exErr } = await supabase
       .from("sponsors_examples")
       .select("name, logo_url, website_url, sort_order, published");
-  
+
     if (exErr) {
       setErrorMsg(exErr.message);
       setSeeding(false);
       return;
     }
-  
+
     const rowsToInsert =
       (examples ?? []).map((x: any) => ({
         name: x.name,
@@ -174,14 +232,14 @@ export default function SponsorsCmsPage() {
         published: x.published,
         source: "seed" as const,
       })) ?? [];
-  
+
     if (rowsToInsert.length === 0) {
       setMsg("No example sponsors found in sponsors_examples.");
       setSeeding(false);
       return;
     }
-  
-    // 2) optional: replace the sponsors table completely
+
+    // 2) Optional: replace the sponsors table completely
     if (replace) {
       const ok = window.confirm("Replace ALL sponsors with the example list?");
       if (!ok) {
@@ -195,20 +253,22 @@ export default function SponsorsCmsPage() {
         return;
       }
     }
-  
-    // 3) upsert by unique(name)
+
+    // 3) Upsert by unique(name) - merges if name exists, inserts if new
     const { error: upErr } = await supabase
       .from("sponsors")
       .upsert(rowsToInsert, { onConflict: "name" });
-  
+
     if (upErr) setErrorMsg(upErr.message);
     else setMsg(replace ? "Replaced sponsors with examples." : "Seeded examples into sponsors.");
-  
+
     await load();
     setSeeding(false);
   }
-  
 
+  /**
+   * Deletes multiple selected sponsors (bulk operation)
+   */
   async function deleteSelected() {
     if (selectedIds.length === 0) return;
 
@@ -229,13 +289,19 @@ export default function SponsorsCmsPage() {
     }
   }
 
+  // ========================================================================
+  // RENDER
+  // ========================================================================
+
   return (
     <div className="space-y-4">
+      {/* Header Section */}
       <div>
         <h1 className="text-2xl font-semibold">CMS — Sponsors</h1>
         <p className="text-sm opacity-70">Add/edit sponsors and media partners.</p>
       </div>
 
+      {/* Add Sponsor Form */}
       <div className="rounded-md border p-4 space-y-3">
         <div className="font-medium">Add sponsor</div>
 
@@ -275,6 +341,7 @@ export default function SponsorsCmsPage() {
           </label>
         </div>
 
+        {/* Action Buttons */}
         <div className="flex flex-wrap gap-3">
           <button
             className="rounded-md bg-black text-white px-4 py-2 text-sm disabled:opacity-60"
@@ -283,7 +350,7 @@ export default function SponsorsCmsPage() {
           >
             {saving ? "Saving…" : "Add"}
           </button>
-          
+
           <button
             className="rounded-md border px-4 py-2 text-sm disabled:opacity-60"
             onClick={() => seedFromExamples({ replace: false })}
@@ -300,12 +367,13 @@ export default function SponsorsCmsPage() {
             {seeding ? "Seeding…" : "Seed examples (replace)"}
           </button>
         </div>
-        
       </div>
 
+      {/* Status Messages */}
       {msg ? <div className="text-sm text-green-700">{msg}</div> : null}
       {errorMsg ? <div className="text-sm text-red-600">Error: {errorMsg}</div> : null}
 
+      {/* Bulk Actions */}
       <div className="flex items-center justify-between">
         <div className="text-sm opacity-70">Selected: {selectedIds.length}</div>
 
@@ -328,6 +396,7 @@ export default function SponsorsCmsPage() {
         </div>
       </div>
 
+      {/* Sponsors Table */}
       <div className="rounded-md border overflow-x-auto">
         <table className="min-w-[980px] w-full text-sm">
           <thead className="border-b bg-gray-50">
@@ -430,6 +499,7 @@ export default function SponsorsCmsPage() {
         </table>
       </div>
 
+      {/* Help Text */}
       <p className="text-xs opacity-60">
         Tip: set <span className="font-mono">sort_order</span> to control ordering (lower appears first).
       </p>

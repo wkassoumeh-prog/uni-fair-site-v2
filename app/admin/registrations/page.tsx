@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+// ============================================================================
+// TYPES & CONSTANTS
+// ============================================================================
+
 type RegistrationRow = {
   id: string;
   created_at: string;
@@ -21,6 +25,13 @@ const EXPORT_BATCH_SIZE = 1000;
 
 const HIDDEN_KEY = "admin_hidden_registration_ids_v1";
 
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Escapes CSV values by wrapping in quotes if needed and escaping internal quotes
+ */
 function csvEscape(value: unknown) {
   if (value === null || value === undefined) return "";
   const s = String(value);
@@ -29,6 +40,9 @@ function csvEscape(value: unknown) {
   return needsQuotes ? `"${escaped}"` : escaped;
 }
 
+/**
+ * Triggers a browser download of a text file
+ */
 function downloadTextFile(filename: string, content: string, mime = "text/plain") {
   const blob = new Blob([content], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);
@@ -41,6 +55,10 @@ function downloadTextFile(filename: string, content: string, mime = "text/plain"
   URL.revokeObjectURL(url);
 }
 
+/**
+ * Loads hidden registration IDs from localStorage
+ * These are DB rows that have been hidden from the admin view (not deleted from DB)
+ */
 function loadHiddenIds(): Set<string> {
   try {
     const raw = localStorage.getItem(HIDDEN_KEY);
@@ -53,12 +71,23 @@ function loadHiddenIds(): Set<string> {
   }
 }
 
+/**
+ * Saves hidden registration IDs to localStorage
+ */
 function saveHiddenIds(set: Set<string>) {
   localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(set)));
 }
 
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 export default function AdminRegistrationsPage() {
-  // DB rows
+  // ========================================================================
+  // STATE MANAGEMENT
+  // ========================================================================
+
+  // Data state
   const [rows, setRows] = useState<RegistrationRow[]>([]);
   const [total, setTotal] = useState(0);
 
@@ -71,18 +100,18 @@ export default function AdminRegistrationsPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // --- Filters and UI State ---
+  // Filter and pagination state
   const [q, setQ] = useState("");
   const [institutionType, setInstitutionType] = useState("all");
   const [sourceFilter, setSourceFilter] = useState<"all" | "website" | "seed">("all");
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
   const [page, setPage] = useState(1);
 
-  // --- Exporting Data State ---
+  // Export state
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
 
-  // --- Local Testing Registration Form State ---
+  // Local testing form state
   const [showAdd, setShowAdd] = useState(false);
   const [newInstitutionName, setNewInstitutionName] = useState("");
   const [newContactName, setNewContactName] = useState("");
@@ -93,20 +122,36 @@ export default function AdminRegistrationsPage() {
 
   const [reloadTick, setReloadTick] = useState(0);
 
-  // selection (works for both local + db rows currently visible)
+  // Bulk selection state (works for both local + db rows currently visible)
   const [selected, setSelected] = useState<Record<string, boolean>>({});
+
+  // ========================================================================
+  // COMPUTED VALUES
+  // ========================================================================
 
   const totalPages = useMemo(() => Math.max(1, Math.ceil(total / PAGE_SIZE)), [total]);
 
-  // load hidden ids once
+  // ========================================================================
+  // EFFECTS
+  // ========================================================================
+
+  // Load hidden IDs from localStorage on mount
   useEffect(() => {
     setHiddenDbIds(loadHiddenIds());
   }, []);
 
+  // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
   }, [q, institutionType, sourceFilter, sort]);
 
+  // ========================================================================
+  // FILTER FUNCTIONS
+  // ========================================================================
+
+  /**
+   * Builds a Supabase OR query for searching across multiple fields
+   */
   function buildSearchOr(term: string) {
     const escaped = term.replace(/%/g, "\\%").replace(/_/g, "\\_");
     const pattern = `%${escaped}%`;
@@ -118,6 +163,9 @@ export default function AdminRegistrationsPage() {
     ].join(",");
   }
 
+  /**
+   * Applies all active filters to a Supabase query
+   */
   function applyFilters(query: any) {
     if (institutionType !== "all") query = query.eq("institution_type", institutionType);
     if (sourceFilter !== "all") query = query.eq("source", sourceFilter);
@@ -126,6 +174,7 @@ export default function AdminRegistrationsPage() {
     return query;
   }
 
+  // Load registrations when filters, pagination, or reload trigger changes
   useEffect(() => {
     let cancelled = false;
 
@@ -170,18 +219,23 @@ export default function AdminRegistrationsPage() {
     };
   }, [page, q, institutionType, sourceFilter, sort, reloadTick]);
 
+  // ========================================================================
+  // COMPUTED VALUES (continued)
+  // ========================================================================
+
+  // Extract unique institution types from current rows for filter dropdown
   const typeOptions = useMemo(() => {
     const set = new Set<string>();
     rows.forEach((r) => r.institution_type && set.add(r.institution_type));
     return ["all", ...Array.from(set).sort()];
   }, [rows]);
 
-  // visible DB rows (hide locally)
+  // Filter out hidden DB rows (these are stored in localStorage)
   const visibleDbRows: UiRow[] = useMemo(() => {
     return rows.filter((r) => !hiddenDbIds.has(r.id));
   }, [rows, hiddenDbIds]);
 
-  // show local rows only on page 1 (so pagination stays sane)
+  // Show local test rows only on page 1 (so pagination stays sane)
   const visibleLocalRows: UiRow[] = useMemo(() => {
     return page === 1 ? localRows : [];
   }, [localRows, page]);
@@ -191,18 +245,29 @@ export default function AdminRegistrationsPage() {
     return [...visibleLocalRows, ...visibleDbRows];
   }, [visibleLocalRows, visibleDbRows]);
 
-  // Track which rows are currently selected via checkboxes
+  // Get array of selected row IDs
   const selectedIds = useMemo(
     () => displayRows.filter((r) => selected[r.id]).map((r) => r.id),
     [displayRows, selected]
   );
 
+  // Check if all visible rows are selected
   const allSelected = displayRows.length > 0 && selectedIds.length === displayRows.length;
 
+  // ========================================================================
+  // SELECTION FUNCTIONS
+  // ========================================================================
+
+  /**
+   * Toggle selection of a single row
+   */
   function toggleOne(id: string) {
     setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
+  /**
+   * Toggle selection of all visible rows
+   */
   function toggleAll() {
     setSelected(() => {
       if (allSelected) return {};
@@ -212,6 +277,13 @@ export default function AdminRegistrationsPage() {
     });
   }
 
+  // ========================================================================
+  // CRUD OPERATIONS
+  // ========================================================================
+
+  /**
+   * Adds a new local test registration (not saved to Supabase)
+   */
   function addLocalRegistration() {
     setErrorMsg(null);
 
@@ -250,6 +322,9 @@ export default function AdminRegistrationsPage() {
     setShowAdd(false);
   }
 
+  /**
+   * Adds demo/test rows for UI testing (not saved to Supabase)
+   */
   function addLocalDemoRows() {
     const now = Date.now();
     const demo: UiRow[] = [
@@ -324,6 +399,9 @@ export default function AdminRegistrationsPage() {
     setLocalRows((prev) => [...demo, ...prev]);
   }
 
+  /**
+   * Hides a DB row from the admin view (stores in localStorage, doesn't delete from DB)
+   */
   function hideDbRow(id: string) {
     setHiddenDbIds((prev) => {
       const next = new Set(prev);
@@ -333,10 +411,16 @@ export default function AdminRegistrationsPage() {
     });
   }
 
+  /**
+   * Deletes a local test row (removes from local state)
+   */
   function deleteLocalRow(id: string) {
     setLocalRows((prev) => prev.filter((r) => r.id !== id));
   }
 
+  /**
+   * Deletes or hides a single row based on whether it's local or DB
+   */
   function deleteOrHideOne(r: UiRow) {
     if (r._local) {
       deleteLocalRow(r.id);
@@ -350,6 +434,11 @@ export default function AdminRegistrationsPage() {
     });
   }
 
+  /**
+   * Removes selected rows from admin view:
+   * - Local rows: deleted from state
+   * - DB rows: hidden (stored in localStorage, not deleted from DB)
+   */
   function deleteSelectedUiOnly() {
     if (selectedIds.length === 0) return;
 
@@ -374,6 +463,9 @@ export default function AdminRegistrationsPage() {
     setSelected({});
   }
 
+  /**
+   * Unhides all previously hidden DB rows (clears localStorage)
+   */
   function resetHiddenDb() {
     const ok = window.confirm("Unhide all hidden DB registrations in the admin view?");
     if (!ok) return;
@@ -382,8 +474,11 @@ export default function AdminRegistrationsPage() {
     setHiddenDbIds(empty);
   }
 
+  /**
+   * Exports all filtered registrations to CSV
+   * Note: Exports ONLY DB rows (respects filters, applies hidden list)
+   */
   async function exportCsv() {
-    // Export ONLY DB rows (visible only depends on filters, not hidden list)
     setExporting(true);
     setExportError(null);
 
@@ -439,6 +534,10 @@ export default function AdminRegistrationsPage() {
       setExporting(false);
     }
   }
+
+  // ========================================================================
+  // RENDER
+  // ========================================================================
 
   return (
     <div className="space-y-6">
