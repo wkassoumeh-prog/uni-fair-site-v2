@@ -20,45 +20,19 @@ const FALLBACK_TEXT_EN =
   "CAREER EXPO SYRIA offers students and parents a unique opportunity to explore educational options, compare programs, and communicate directly with official representatives of educational institutions.";
 
 const FALLBACK_TEXT_AR =
-  "معرض الوظائف سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الإلكترونية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
+  "CAREER EXPO سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الإلكترونية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
   "يهدف المعرض إلى إنشاء اتصال مباشر بين الطلاب والمؤسسات التعليمية، مما يساعدهم على اتخاذ قرارات أكاديمية ومهنية مدروسة من خلال التفاعل وجهاً لوجه.\n\n" +
-  "يوفر معرض الوظائف سوريا للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
+  "يوفر CAREER EXPO سوريا للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
 
 const About: React.FC<AboutProps> = ({ locale, copy }) => {
   const FALLBACK_TEXT = locale === 'ar' ? FALLBACK_TEXT_AR : FALLBACK_TEXT_EN;
   const [aboutText, setAboutText] = useState<string>(FALLBACK_TEXT);
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      // Try live text first
-      const { data: live } = await supabase
-        .from("content_blocks")
-        .select("value")
-        .eq("key", ABOUT_KEY)
-        .maybeSingle();
-
-      // If live is empty, try default
-      if (!live?.value) {
-        const { data: def } = await supabase
-          .from("content_blocks")
-          .select("value")
-          .eq("key", ABOUT_DEFAULT_KEY)
-          .maybeSingle();
-
-        if (!cancelled && def?.value) setAboutText(def.value);
-        return;
-      }
-
-      if (!cancelled) setAboutText(live.value);
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    // Use fallback text based on locale - don't fetch from Supabase for now
+    const text = locale === 'ar' ? FALLBACK_TEXT_AR : FALLBACK_TEXT_EN;
+    setAboutText(text);
+  }, [locale]);
 
   // Convert paragraphs separated by blank lines into <p> blocks
   const paragraphs = aboutText

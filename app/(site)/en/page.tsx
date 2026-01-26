@@ -48,7 +48,7 @@ export default function Home() {
         <ExhibitorRegistration locale={locale} copy={copy} />
         {/* <FeaturedUniversities /> */}
         <Sponsors copy={copy} />
-        <FAQ copy={copy} />
+        <FAQ locale={locale} copy={copy} />
         <Contact copy={copy} />
       </main>
       <Footer copy={copy} />

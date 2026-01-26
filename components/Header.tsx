@@ -45,15 +45,21 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
               Instead of padding the header, we resize the logo.
               The header will shrink/grow to fit the logo perfectly.
           */}
-          <img
-            src={isScrolled ? "/logo/logo-small.png" : "/logo/logo-small-w.png"}
-            alt="Career Expo Syria 2026 Logo"
-            className={`object-cover transition-all duration-300 ${
-              isScrolled ? 'h-12' : 'h-16' 
-            }`} 
-            // h-20 (80px) when scrolled, h-28 (112px) when at top. 
-            // Adjust these numbers to make the header taller/shorter.
-          />
+          <a 
+            href={`/${locale}`}
+            className="flex items-center"
+            aria-label="Go to homepage"
+          >
+            <img
+              src={isScrolled ? "/logo/logo-small.png" : "/logo/logo-small-w.png"}
+              alt="Career Expo Syria 2026 Logo"
+              className={`object-cover transition-all duration-300 ${
+                isScrolled ? 'h-12' : 'h-16' 
+              }`} 
+              // h-20 (80px) when scrolled, h-28 (112px) when at top. 
+              // Adjust these numbers to make the header taller/shorter.
+            />
+          </a>
         </div>
 
         {/* Desktop Navigation */}
@@ -88,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
             }`}
             aria-label="Toggle language"
           >
-            {locale === 'en' ? 'AR' : 'EN'}
+            {locale === 'en' ? 'العربية' : 'EN'}
           </button>
         </nav>
 
@@ -153,7 +159,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
                   : 'border-white text-white hover:bg-white hover:text-blue-900'
               }`}
             >
-              {locale === 'en' ? 'AR' : 'EN'}
+              {locale === 'en' ? 'العربية' : 'EN'}
             </button>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { sendContactEmail } from '@/app/actions/contact';
 import type { Copy } from '@/content/copy.en';
+import PhoneNumber from './PhoneNumber';
 
 interface ContactProps {
   copy: Copy;
@@ -35,10 +36,10 @@ const Contact: React.FC<ContactProps> = ({ copy }) => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-4 block">Get In Touch</span>
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">Contact Us</h2>
+            <span className="text-amber-500 font-bold tracking-wider uppercase text-sm mb-4 block">{copy.contact.badge}</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8">{copy.contact.title}</h2>
             <p className="text-xl text-blue-100 mb-12 max-w-lg">
-              The CAREER EXPO SYRIA team is ready to assist you with all your inquiries.
+              {copy.contact.description}
             </p>
             
             <div className="space-y-8">
@@ -68,7 +69,9 @@ const Contact: React.FC<ContactProps> = ({ copy }) => {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">{copy.contact.phone.title}</h4>
-                    <p className="text-blue-200 group-hover:text-amber-500 transition-colors">{copy.contact.phone.number}</p>
+                    <p className="text-blue-200 group-hover:text-amber-500 transition-colors">
+                      <PhoneNumber value={copy.contact.phone.number} />
+                    </p>
                   </div>
                 </button>
 

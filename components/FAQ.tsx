@@ -1,18 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import React, { useState } from "react";
 import type { Copy } from "@/content/copy.en";
+import type { Locale } from "@/content/getCopy";
 
-type FaqRow = {
-  id: string;
-  question: string;
-  answer: string;
-  sort_order: number;
-  published: boolean;
-};
-
-const FALLBACK_FAQS = [
+const FALLBACK_FAQS_EN = [
   {
     question: "Is the exhibition only for students?",
     answer:
@@ -40,37 +32,42 @@ const FALLBACK_FAQS = [
   },
 ];
 
+const FALLBACK_FAQS_AR = [
+  {
+    question: "هل المعرض مخصص للطلاب فقط؟",
+    answer:
+      "المعرض مفتوح للطلاب وأولياء الأمور وأي شخص مهتم بالتعليم والتطوير الأكاديمي.",
+  },
+  {
+    question: "هل المشاركة مدفوعة؟",
+    answer: "دخول الزوار مجاني. المشاركة للمؤسسات التعليمية مدفوعة.",
+  },
+  {
+    question: "هل يمكن للطلاب التسجيل في الجامعات أثناء المعرض؟",
+    answer:
+      "نعم، سيكون التواصل المباشر والتسجيل الأولي متاحاً مع العديد من المؤسسات المشاركة.",
+  },
+  {
+    question: "هل تشارك الجامعات الدولية والإلكترونية؟",
+    answer:
+      "نعم، يتضمن المعرض الجامعات الدولية والجامعات الإلكترونية ومنصات التعلم الإلكتروني.",
+  },
+  { question: "ما هي ساعات الزيارة؟", answer: "ساعات الزيارة من 10 صباحاً حتى 8 مساءً." },
+  {
+    question: "هل يوجد مواصلات إلى مكان المعرض؟",
+    answer:
+      "نعم، يوجد مواصلات مجانية على مدار الساعة من عدة مناطق في مدينة دمشق.",
+  },
+];
+
 interface FAQProps {
+  locale: Locale;
   copy: Copy;
 }
 
-const FAQ: React.FC<FAQProps> = ({ copy }) => {
+const FAQ: React.FC<FAQProps> = ({ locale, copy }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>(FALLBACK_FAQS);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadFaqs() {
-      const { data, error } = await supabase
-        .from("faqs")
-        .select("id, question, answer, sort_order, published")
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-
-      if (cancelled) return;
-
-      if (!error && data && data.length > 0) {
-        setFaqs((data as FaqRow[]).map((x) => ({ question: x.question, answer: x.answer })));
-        setOpenIndex(0);
-      }
-    }
-
-    loadFaqs();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const faqs = locale === 'ar' ? FALLBACK_FAQS_AR : FALLBACK_FAQS_EN;
 
   return (
     <section id="faq" className="py-24 bg-slate-50">

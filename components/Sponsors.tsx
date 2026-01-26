@@ -53,8 +53,8 @@ export default function Sponsors({ copy }: SponsorsProps) {
           </p>
         </div>
 
-        <div className="bg-slate-50 rounded-3xl p-12 border-2 border-dashed border-slate-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+        <div className="bg-slate-50 rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 border-2 border-dashed border-slate-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-center opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
             {showPlaceholders ? (
               [1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="flex justify-center">
@@ -68,7 +68,7 @@ export default function Sponsors({ copy }: SponsorsProps) {
                     src={s.logo_url}
                     alt={s.name}
                     title={s.name} // tooltip on hover
-                    className="h-32 w-auto max-w-[160px] object-contain"
+                    className="h-16 sm:h-20 md:h-24 lg:h-32 w-auto max-w-full sm:max-w-[120px] md:max-w-[140px] lg:max-w-[160px] object-contain"
                     loading="lazy"
                   />
                 );
@@ -76,15 +76,17 @@ export default function Sponsors({ copy }: SponsorsProps) {
                 return (
                   <div key={s.id} className="flex flex-col items-center gap-2">
                     {s.website_url ? (
-                      <a href={s.website_url} target="_blank" rel="noreferrer" title={s.name}>
+                      <a href={s.website_url} target="_blank" rel="noreferrer" title={s.name} className="flex justify-center">
                         {logo}
                       </a>
                     ) : (
-                      logo
+                      <div className="flex justify-center">
+                        {logo}
+                      </div>
                     )}
               
                     {/* Visible name */}
-                    <h2 className="text-2xl text-blue-900 text-center">{s.name}</h2>
+                    <h2 className="text-sm sm:text-base md:text-lg lg:text-2xl text-blue-900 text-center">{s.name}</h2>
                   </div>
                 );
               })
