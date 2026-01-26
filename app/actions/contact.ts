@@ -8,12 +8,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL");
-if (!SERVICE_ROLE) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
-
-const supabaseAdmin = createClient(SUPABASE_URL, SERVICE_ROLE, {
-  auth: { persistSession: false },
-});
+// Don't throw during build - these will be checked at runtime
+// Create client with fallbacks to prevent build errors
+const supabaseAdmin = SUPABASE_URL && SERVICE_ROLE
+  ? createClient(SUPABASE_URL, SERVICE_ROLE, {
+      auth: { persistSession: false },
+    })
+  : null;
 
 export async function sendContactEmail(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
@@ -23,6 +24,11 @@ export async function sendContactEmail(formData: FormData) {
 
   if (!name || !email || !message) {
     return { error: "Please fill in all required fields." };
+  }
+
+  // Check for required environment variables at runtime
+  if (!SUPABASE_URL || !SERVICE_ROLE || !supabaseAdmin) {
+    return { error: "Server configuration error. Please contact support." };
   }
 
   // 1) Save to Supabase (admin key bypasses RLS)
