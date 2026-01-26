@@ -2,8 +2,13 @@
 
 import React, { useState } from 'react';
 import { sendContactEmail } from '@/app/actions/contact';
+import type { Copy } from '@/content/copy.en';
 
-const Contact: React.FC = () =>  {
+interface ContactProps {
+  copy: Copy;
+}
+
+const Contact: React.FC<ContactProps> = ({ copy }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,11 +46,11 @@ const Contact: React.FC = () =>  {
                 type="button"
                 className="flex items-start space-x-6 group hover:no-underline focus:no-underline cursor-pointer relative"
                 onClick={async () => {
-                  await navigator.clipboard.writeText('+963 11 3344805');
+                  await navigator.clipboard.writeText(copy.contact.phone.number);
                   const btn = document.getElementById('copy-phone-btn');
                   if (btn) {
                     const msg = document.createElement('span');
-                    msg.textContent = 'Copied!';
+                    msg.textContent = copy.contact.phone.copied;
                     msg.className = 'absolute top-0 left-full ml-2 bg-blue-800 text-amber-400 text-xs px-2 py-1 rounded shadow-lg animate-fade-in-out z-20';
                     btn.appendChild(msg);
                     setTimeout(() => {
@@ -62,13 +67,13 @@ const Contact: React.FC = () =>  {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">Phone Numbers</h4>
-                    <p className="text-blue-200 group-hover:text-amber-500 transition-colors">+963 11 3344805</p>
+                    <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">{copy.contact.phone.title}</h4>
+                    <p className="text-blue-200 group-hover:text-amber-500 transition-colors">{copy.contact.phone.number}</p>
                   </div>
                 </button>
 
               <a
-                href="mailto:info@careerexpo-syria.com"
+                href={`mailto:${copy.contact.email.address}`}
                 className="flex items-start space-x-6 group hover:no-underline focus:no-underline"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -79,8 +84,8 @@ const Contact: React.FC = () =>  {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">Email Address</h4>
-                  <p className="text-blue-200 group-hover:text-amber-500 transition-colors">info@careerexpo-syria.com</p>
+                  <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">{copy.contact.email.title}</h4>
+                  <p className="text-blue-200 group-hover:text-amber-500 transition-colors">{copy.contact.email.address}</p>
                 </div>
               </a>
 
@@ -96,8 +101,8 @@ const Contact: React.FC = () =>  {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">Facebook</h4>
-                  <p className="text-blue-200 group-hover:text-amber-500 transition-colors">Follow us on Facebook!</p>
+                  <h4 className="font-bold text-lg mb-1 group-hover:text-amber-500 transition-colors">{copy.contact.facebook.title}</h4>
+                  <p className="text-blue-200 group-hover:text-amber-500 transition-colors">{copy.contact.facebook.text}</p>
                 </div>
               </a>
             </div>
@@ -111,36 +116,36 @@ const Contact: React.FC = () =>  {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-blue-900 mb-2">Message Sent!</h3>
-                <p className="text-slate-600 mb-8">We have received your message and will get back to you soon.</p>
+                <h3 className="text-2xl font-bold text-blue-900 mb-2">{copy.contact.success.title}</h3>
+                <p className="text-slate-600 mb-8">{copy.contact.success.message}</p>
                 <button 
                   onClick={() => setSuccess(false)}
                   className="text-blue-900 font-bold hover:underline"
                 >
-                  Send another message
+                  {copy.contact.success.sendAnother}
                 </button>
               </div>
             ) : (
               <>
-                <h3 className="text-2xl font-bold text-blue-900 mb-8">Send us a Message</h3>
+                <h3 className="text-2xl font-bold text-blue-900 mb-8">{copy.contact.form.title}</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-slate-700 text-sm font-bold mb-2">Name</label>
-                      <input name="name" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Your Name" />
+                      <label className="block text-slate-700 text-sm font-bold mb-2">{copy.contact.form.name}</label>
+                      <input name="name" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder={copy.contact.form.namePlaceholder} />
                     </div>
                     <div>
-                      <label className="block text-slate-700 text-sm font-bold mb-2">Email</label>
-                      <input name="email" required type="email" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="your@email.com" />
+                      <label className="block text-slate-700 text-sm font-bold mb-2">{copy.contact.form.email}</label>
+                      <input name="email" required type="email" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder={copy.contact.form.emailPlaceholder} />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-slate-700 text-sm font-bold mb-2">Subject</label>
-                    <input name="subject" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="Inquiry about..." />
+                    <label className="block text-slate-700 text-sm font-bold mb-2">{copy.contact.form.subject}</label>
+                    <input name="subject" required type="text" className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder={copy.contact.form.subjectPlaceholder} />
                   </div>
                   <div>
-                    <label className="block text-slate-700 text-sm font-bold mb-2">Message</label>
-                    <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder="How can we help you?"></textarea>
+                    <label className="block text-slate-700 text-sm font-bold mb-2">{copy.contact.form.message}</label>
+                    <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 transition-all" placeholder={copy.contact.form.messagePlaceholder}></textarea>
                   </div>
                   
                   {error && (
@@ -154,7 +159,7 @@ const Contact: React.FC = () =>  {
                     type="submit"
                     className={`w-full py-4 bg-amber-500 hover:bg-amber-600 text-blue-900 font-bold rounded-xl transition-all shadow-lg shadow-amber-200 active:scale-[0.98] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                   >
-                    {loading ? 'Sending...' : 'Send Message'}
+                    {loading ? copy.contact.form.sending : copy.contact.form.submit}
                   </button>
                 </form>
               </>

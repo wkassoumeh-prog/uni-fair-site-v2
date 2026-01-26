@@ -1,7 +1,12 @@
 
 import React from 'react';
+import type { Copy } from '@/content/copy.en';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  copy: Copy;
+}
+
+const Footer: React.FC<FooterProps> = ({ copy }) => {
   return (
     <footer className="bg-slate-900 text-white py-20">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -12,14 +17,14 @@ const Footer: React.FC = () => {
               <img src="/logo/logo-small-w.png" alt="Career Expo Syria 2026 Logo" className="h-18" />
             </div>
             <p className="text-slate-400 leading-relaxed mb-6">
-            Syria's largest gathering of universities and students. Shaping the futures of tomorrow's leaders.
+              {copy.footer.description}
             </p>
           </div>
 
           {/* Locations */}
           <div>
             <div className="flex items-center mb-6 h-12">
-              <h4 className="text-lg font-bold text-white uppercase tracking-wider">Event Venue</h4>
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.venue.title}</h4>
             </div>
             <div className="text-slate-400 space-y-4">
               <div className="flex items-start space-x-3">
@@ -27,36 +32,36 @@ const Footer: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <p>Damascus City of Exhibitions<br />Damascus City, Syria</p>
+                <p style={{ whiteSpace: 'pre-line' }}>{copy.footer.venue.location}</p>
               </div>
-              <p className="font-bold text-white mt-4">Dates: July 16 – 18, 2026</p>
+              <p className="font-bold text-white mt-4">{copy.footer.venue.dates}</p>
             </div>
           </div>
 
           {/* Contact Details */}
           <div>
             <div className="flex items-center mb-6 h-12">
-              <h4 className="text-lg font-bold text-white uppercase tracking-wider">Contact Us</h4>
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.contact.title}</h4>
             </div>
             <ul className="space-y-4 text-slate-400">
               <li className="flex items-center space-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>info@careerexpo-syria.com</span>
+                <span>{copy.footer.contact.email}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span>+963 11 3344805</span>
+                <span>{copy.footer.contact.phone}</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="pt-10 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-          <p>© Career Expo Syria 2026. The International Fair for Universities and higher education.</p>
+          <p>{copy.footer.copyright}</p>
           {/* <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

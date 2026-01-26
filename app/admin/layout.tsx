@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         .maybeSingle();
 
       if (profile?.role !== "admin") {
-        router.replace("/");
+        router.replace("/en");
         if (!cancelled) {
           setAllowed(false);
           setLoading(false);

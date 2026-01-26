@@ -2,17 +2,30 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import type { Copy } from "@/content/copy.en";
+import type { Locale } from "@/content/getCopy";
+
+interface AboutProps {
+  locale: Locale;
+  copy: Copy;
+}
 
 const ABOUT_KEY = "about_paragraph";
 const ABOUT_DEFAULT_KEY = "about_paragraph_default";
 
 // Your current text becomes the fallback (and should match what you store as default in Supabase)
-const FALLBACK_TEXT =
+const FALLBACK_TEXT_EN =
   "CAREER EXPO SYRIA is the first educational exhibition of its kind in Syria, bringing together local and international universities, online universities, institutes, training centers, and e-learning platforms in one place.\n\n" +
   "The exhibition aims to create a direct connection between students and educational institutions, helping them make informed academic and career decisions through face-to-face interaction.\n\n" +
   "CAREER EXPO SYRIA offers students and parents a unique opportunity to explore educational options, compare programs, and communicate directly with official representatives of educational institutions.";
 
-const About: React.FC = () => {
+const FALLBACK_TEXT_AR =
+  "معرض الوظائف سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الإلكترونية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
+  "يهدف المعرض إلى إنشاء اتصال مباشر بين الطلاب والمؤسسات التعليمية، مما يساعدهم على اتخاذ قرارات أكاديمية ومهنية مدروسة من خلال التفاعل وجهاً لوجه.\n\n" +
+  "يوفر معرض الوظائف سوريا للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
+
+const About: React.FC<AboutProps> = ({ locale, copy }) => {
+  const FALLBACK_TEXT = locale === 'ar' ? FALLBACK_TEXT_AR : FALLBACK_TEXT_EN;
   const [aboutText, setAboutText] = useState<string>(FALLBACK_TEXT);
 
   useEffect(() => {
@@ -70,10 +83,10 @@ const About: React.FC = () => {
 
           <div className="lg:w-1/2">
             <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
-              About the Event
+              {copy.about.badge}
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">
-              Connecting Students with Their Future
+              {copy.about.title}
             </h2>
 
             {/* ✅ CMS-driven paragraph(s) */}
@@ -102,9 +115,9 @@ const About: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-blue-900">1-on-1 Advising</h4>
+                  <h4 className="font-bold text-blue-900">{copy.about.features.advising.title}</h4>
                   <p className="text-sm text-slate-500">
-                    Meet admissions officers directly.
+                    {copy.about.features.advising.desc}
                   </p>
                 </div>
               </div>
@@ -127,9 +140,9 @@ const About: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-blue-900">Scholarship Hub</h4>
+                  <h4 className="font-bold text-blue-900">{copy.about.features.scholarships.title}</h4>
                   <p className="text-sm text-slate-500">
-                    Access exclusive funding opportunities.
+                    {copy.about.features.scholarships.desc}
                   </p>
                 </div>
               </div>

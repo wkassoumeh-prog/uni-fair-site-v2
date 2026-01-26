@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "CAREER EXPO SYRIA - Connecting Students with Their Future",
 };
 
+// Root layout - minimal, only applies to admin routes
+// Site routes (/en, /ar) use their own layouts in (site) route group
 export default function RootLayout({
   children,
 }: Readonly<{

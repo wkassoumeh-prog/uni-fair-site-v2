@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
+import type { Copy } from '@/content/copy.en';
+import type { Locale } from '@/content/getCopy';
 
 interface HeaderProps {
   isScrolled: boolean;
+  locale: Locale;
+  copy: Copy;
 }
 
-const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
+const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Exhibitors', href: '#why-exhibit' },
-    { name: 'Visitors', href: '#for-visitors' },
-    { name: 'FAQ', href: '#faq' },
-    // { name: 'Contact us', href: '#contact' },
+    { name: copy.header.nav.about, href: `/${locale}#about` },
+    { name: copy.header.nav.exhibitors, href: `/${locale}#why-exhibit` },
+    { name: copy.header.nav.visitors, href: `/${locale}#for-visitors` },
+    { name: copy.header.nav.faq, href: `/${locale}#faq` },
   ];
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'en' ? 'ar' : 'en';
+    const currentHash = window.location.hash;
+    window.location.href = `/${newLocale}${currentHash}`;
+  };
 
   return (
     <header
@@ -61,15 +70,26 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
             </a>
           ))}
           <a
-            href="#contact"
+            href={`/${locale}#contact`}
             className={`px-6 py-2 rounded-full font-bold text-sm xl:text-base flex items-center justify-center transition-all duration-300 border-2 ${
               isScrolled 
                 ? 'bg-blue-900 border-blue-900 text-white hover:bg-transparent hover:text-blue-900' 
                 : 'bg-white border-white text-blue-900 hover:bg-transparent hover:text-white'
             }`}
           >
-            CONTACT US
+            {copy.header.nav.contactUs}
           </a>
+          <button
+            onClick={toggleLocale}
+            className={`px-4 py-2 rounded-full font-bold text-sm xl:text-base transition-all duration-300 border-2 ${
+              isScrolled 
+                ? 'border-blue-900 text-blue-900 hover:bg-blue-900 hover:text-white' 
+                : 'border-white text-white hover:bg-white hover:text-blue-900'
+            }`}
+            aria-label="Toggle language"
+          >
+            {locale === 'en' ? 'AR' : 'EN'}
+          </button>
         </nav>
 
         {/* Mobile Menu Icon */}
@@ -110,9 +130,9 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
               {link.name}
             </a>
           ))}
-          <div className="pt-4">
+          <div className="pt-4 space-y-3">
             <a
-              href="#registration"
+              href={`/${locale}#contact`}
               onClick={() => setIsMobileMenuOpen(false)}
               className={`block w-full text-center px-6 py-4 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
                 isScrolled 
@@ -120,8 +140,21 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
                   : 'bg-white border-white text-blue-900'
               }`}
             >
-              CONTACT US
+              {copy.header.nav.contactUs}
             </a>
+            <button
+              onClick={() => {
+                toggleLocale();
+                setIsMobileMenuOpen(false);
+              }}
+              className={`block w-full text-center px-6 py-4 rounded-full font-bold text-lg transition-all duration-300 border-2 ${
+                isScrolled 
+                  ? 'border-blue-900 text-blue-900 hover:bg-blue-900 hover:text-white' 
+                  : 'border-white text-white hover:bg-white hover:text-blue-900'
+              }`}
+            >
+              {locale === 'en' ? 'AR' : 'EN'}
+            </button>
           </div>
         </div>
       </div>

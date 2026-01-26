@@ -1,8 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/messages/page": "app/admin/messages/page.js",
-  "/admin/registrations/page": "app/admin/registrations/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/cms/page": "app/admin/cms/page.js"
+  "/(site)/en/page": "app/(site)/en/page.js",
+  "/(site)/ar/page": "app/(site)/ar/page.js"
 }

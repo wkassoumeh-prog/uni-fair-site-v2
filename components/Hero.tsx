@@ -1,7 +1,14 @@
 
 import React from 'react';
+import type { Copy } from '@/content/copy.en';
+import type { Locale } from '@/content/getCopy';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  locale: Locale;
+  copy: Copy;
+}
+
+const Hero: React.FC<HeroProps> = ({ locale, copy }) => {
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -18,23 +25,20 @@ const Hero: React.FC = () => {
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center text-white">
         <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-tight drop-shadow-2xl">
-          Career Expo <br />
-          <span className="text-amber-500">Syria 2026</span>
+          {copy.hero.title} <br />
+          <span className="text-amber-500">{copy.hero.titleHighlight}</span>
         </h1>
         <h2 className="text-amber-400 text-lg md:text-lg font-bold tracking-widest uppercase mb-4 animate-fade-in">
-        Connecting Students with Their Future
+          {copy.hero.subtitle}
         </h2>
         <p className="max-w-2xl mx-auto text-lg md:text-lg mb-10 text-slate-100 font-light leading-relaxed">
-          Connect with world-class institutions, explore diverse programs, and find your perfect academic path at the largest education event of the year.
+          {copy.hero.description}
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-          <a href="#registration" className="px-10 py-4 bg-amber-500 text-blue-900 font-bold rounded-full text-lg hover:bg-amber-400 transition-all transform hover:scale-105 shadow-xl">
-              JOIN AS EXHIBITOR
+          <a href={`/${locale}#registration`} className="px-10 py-4 bg-amber-500 text-blue-900 font-bold rounded-full text-lg hover:bg-amber-400 transition-all transform hover:scale-105 shadow-xl">
+            {copy.hero.cta}
           </a>
-          {/* <button className="px-10 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-blue-900 transition-all"> */}
-          {/* View Schedule */}
-          {/* </button> */}
         </div>
       </div>
 

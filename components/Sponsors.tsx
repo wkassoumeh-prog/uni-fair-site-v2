@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import type { Copy } from "@/content/copy.en";
 
 type Sponsor = {
   id: string;
@@ -10,7 +11,11 @@ type Sponsor = {
   website_url: string | null;
 };
 
-export default function Sponsors() {
+interface SponsorsProps {
+  copy: Copy;
+}
+
+export default function Sponsors({ copy }: SponsorsProps) {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
 
   useEffect(() => {
@@ -40,12 +45,11 @@ export default function Sponsors() {
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
-            Our Partners
+            {copy.sponsors.badge}
           </span>
-          <h2 className="text-4xl font-bold text-blue-900 mb-6">Sponsors & Media Partners</h2>
+          <h2 className="text-4xl font-bold text-blue-900 mb-6">{copy.sponsors.title}</h2>
           <p className="text-lg text-slate-600">
-            CAREER EXPO SYRIA proudly collaborates with a group of sponsors and media partners who contribute to the
-            success of this educational event.
+            {copy.sponsors.description}
           </p>
         </div>
 

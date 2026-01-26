@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import type { Copy } from "@/content/copy.en";
 
 type FaqRow = {
   id: string;
@@ -39,7 +40,11 @@ const FALLBACK_FAQS = [
   },
 ];
 
-const FAQ: React.FC = () => {
+interface FAQProps {
+  copy: Copy;
+}
+
+const FAQ: React.FC<FAQProps> = ({ copy }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>(FALLBACK_FAQS);
 
@@ -72,9 +77,9 @@ const FAQ: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
-            Help Center
+            {copy.faq.badge}
           </span>
-          <h2 className="text-4xl font-bold text-blue-900 mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-bold text-blue-900 mb-6">{copy.faq.title}</h2>
         </div>
 
         <div className="max-w-3xl mx-auto space-y-4">
