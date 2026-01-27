@@ -15,6 +15,35 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+/* Arabic fonts - Cairo for headings, Noto Naskh Arabic for body */
+html[dir="rtl"] body {
+  font-family: 'Noto Naskh Arabic', serif;
+}
+
 h1, h2, h3 {
   font-family: 'Playfair Display', serif;
+}
+
+/* Arabic headings use Cairo */
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6 {
+  font-family: 'Cairo', sans-serif;
+}
+
+/* Font toggle for English site - apply Cairo when active */
+body.font-cairo-active {
+  font-family: 'Cairo', sans-serif;
+}
+
+body.font-cairo-active h1,
+body.font-cairo-active h2,
+body.font-cairo-active h3,
+body.font-cairo-active h4,
+body.font-cairo-active h5,
+body.font-cairo-active h6 {
+  font-family: 'Cairo', sans-serif;
 }

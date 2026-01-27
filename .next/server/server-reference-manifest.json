@@ -1,1 +1,24 @@
-{"node":{"404a2de5cdfdf7eca09480507ab7d66137ac289abe":{"workers":{"app/(site)/ar/page":{"moduleId":"40260","async":false},"app/(site)/en/page":{"moduleId":"40260","async":false}},"layer":{"app/(site)/ar/page":"action-browser","app/(site)/en/page":"action-browser"},"filename":"../C:\\Users\\wasim\\Documents\\global-university-fair-2026\\app\\actions\\contact.ts","exportedName":"sendContactEmail"}},"edge":{},"encryptionKey":"yA52ckeVpW2QKV2C9v065ohSalqJ2gH5kYZgUVb6VAg="}
+{
+  "node": {
+    "404a2de5cdfdf7eca09480507ab7d66137ac289abe": {
+      "workers": {
+        "app/(site)/ar/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cwasim%5C%5CDocuments%5C%5Cglobal-university-fair-2026%5C%5Capp%5C%5Cactions%5C%5Ccontact.ts%22%2C%5B%7B%22id%22%3A%22404a2de5cdfdf7eca09480507ab7d66137ac289abe%22%2C%22exportedName%22%3A%22sendContactEmail%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Cwasim%5C%5CDocuments%5C%5Cglobal-university-fair-2026%5C%5Capp%5C%5Cactions%5C%5Ccontact.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/(site)/en/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cwasim%5C%5CDocuments%5C%5Cglobal-university-fair-2026%5C%5Capp%5C%5Cactions%5C%5Ccontact.ts%22%2C%5B%7B%22id%22%3A%22404a2de5cdfdf7eca09480507ab7d66137ac289abe%22%2C%22exportedName%22%3A%22sendContactEmail%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Cwasim%5C%5CDocuments%5C%5Cglobal-university-fair-2026%5C%5Capp%5C%5Cactions%5C%5Ccontact.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(site)/ar/page": "action-browser",
+        "app/(site)/en/page": "action-browser"
+      },
+      "filename": "../C:\\Users\\wasim\\Documents\\global-university-fair-2026\\app\\actions\\contact.ts",
+      "exportedName": "sendContactEmail"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "yA52ckeVpW2QKV2C9v065ohSalqJ2gH5kYZgUVb6VAg="
+}
