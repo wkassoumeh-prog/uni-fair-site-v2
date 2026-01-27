@@ -9,7 +9,7 @@ export const copyEn = {
     },
   },
   hero: {
-    title: "Career Expo",
+    title: "CAREER EXPO",
     titleHighlight: "Syria 2026",
     subtitle: "Connecting Students with Their Future",
     description:
