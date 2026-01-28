@@ -1,7 +1,5 @@
 
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import type { Copy } from '@/content/copy.en';
 import type { Locale } from '@/content/getCopy';
 
@@ -11,28 +9,6 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ locale, copy }) => {
-  const [useCairoFont, setUseCairoFont] = useState(false);
-  
-  // Only enable font toggle for English locale
-  const isEnglish = locale === 'en';
-  
-  // Apply font toggle to entire page via body class
-  useEffect(() => {
-    if (isEnglish) {
-      if (useCairoFont) {
-        document.body.classList.add('font-cairo-active');
-      } else {
-        document.body.classList.remove('font-cairo-active');
-      }
-    }
-  }, [useCairoFont, isEnglish]);
-  
-  const handleTitleClick = () => {
-    if (isEnglish) {
-      setUseCairoFont(!useCairoFont);
-    }
-  };
-
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -48,12 +24,7 @@ const Hero: React.FC<HeroProps> = ({ locale, copy }) => {
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10 text-center text-white">
-        <h1 
-          className={`text-5xl md:text-8xl font-bold mb-8 leading-tight drop-shadow-2xl ${
-            isEnglish ? 'cursor-pointer transition-all hover:scale-105' : ''
-          }`}
-          onClick={handleTitleClick}
-        >
+        <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-tight drop-shadow-2xl">
           {copy.hero.title} <br />
           <span className="text-amber-500">{copy.hero.titleHighlight}</span>
         </h1>

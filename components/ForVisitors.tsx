@@ -31,6 +31,9 @@ const ForVisitors: React.FC<ForVisitorsProps> = ({ copy }) => {
           </div>
 
           <div className="lg:w-1/2">
+            <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block opacity-0" aria-hidden="true">
+              {copy.forVisitors.badge}
+            </span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">
               {copy.forVisitors.gainsTitle}
             </h2>
@@ -43,13 +46,32 @@ const ForVisitors: React.FC<ForVisitorsProps> = ({ copy }) => {
               ))}
             </div>
             
-            <div className="mt-12 p-8 bg-amber-50 rounded-2xl border-l-4 border-amber-500">
+            {/* <div className="mt-12 p-8 bg-amber-50 rounded-2xl border-l-4 border-amber-500">
               <p className="text-amber-900 text-xl font-bold italic">
-                {copy.forVisitors.quote}
+                {copy.forVisitors.quote1}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
+
+        <div className="flex flex-col lg:flex-row gap-16 items-stretch">
+          <div className="lg:w-1/2">
+          <div className="mt-12 p-8 bg-amber-50 rounded-2xl border-l-4 border-amber-500 h-full flex items-center">
+            <p className="text-amber-900 text-xl font-bold italic">
+              {copy.forVisitors.quote1}
+            </p>
+          </div>
+          </div>
+          <div className="lg:w-1/2">
+          
+          <div className="mt-12 p-8 bg-amber-50 rounded-2xl border-l-4 border-amber-500 h-full flex items-center">
+            <p className="text-amber-900 text-xl font-bold italic">
+              {copy.forVisitors.quote2}
+            </p>
+          </div>
+          </div>
+        </div>
+      
       </div>
     </section>
   );

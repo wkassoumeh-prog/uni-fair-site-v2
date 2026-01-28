@@ -106,7 +106,8 @@ export const copyEn = {
         desc: "Accurate information to support informed academic decisions.",
       },
     ],
-    quote: '"One visit can save you years of searching."',
+    quote1: '"Get informed, compare your options, and take the next step toward the career you want—faster."',
+    quote2: '“One visit can turn your education search into a clear decision.”',
   },
   registration: {
     badge: "Registration",

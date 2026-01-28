@@ -33,17 +33,3 @@ html[dir="rtl"] h5,
 html[dir="rtl"] h6 {
   font-family: 'Cairo', sans-serif;
 }
-
-/* Font toggle for English site - apply Cairo when active */
-body.font-cairo-active {
-  font-family: 'Cairo', sans-serif;
-}
-
-body.font-cairo-active h1,
-body.font-cairo-active h2,
-body.font-cairo-active h3,
-body.font-cairo-active h4,
-body.font-cairo-active h5,
-body.font-cairo-active h6 {
-  font-family: 'Cairo', sans-serif;
-}
