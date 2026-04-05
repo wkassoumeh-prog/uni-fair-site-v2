@@ -14,7 +14,7 @@ const FeaturedUniversities: React.FC = () => {
   return (
     <section id="universities" className="py-24 bg-slate-50">
       <div className="container mx-auto px-6 text-center">
-        <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">Participating Institutions</span>
+        <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">Participating Institutions</span>
         <h2 className="text-4xl font-bold text-blue-900 mb-16">Explore World-Class Universities</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

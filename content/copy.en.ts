@@ -68,7 +68,6 @@ export const copyEn = {
       types: [
         "Private universities",
         "International universities",
-        "Online universities",
         "Training institutes and centers",
         "Language centers",
         "E-learning platforms",
@@ -91,15 +90,11 @@ export const copyEn = {
     gains: [
       {
         title: "Direct Intro",
-        desc: "Direct introduction to universities and educational programs.",
+        desc: "Direct introduction to universities and educational programs Face-to-face communication with official representatives..",
       },
       {
         title: "Comparison",
         desc: "The ability to compare multiple educational options in one place.",
-      },
-      {
-        title: "Face-to-Face",
-        desc: "Face-to-face communication with official representatives.",
       },
       {
         title: "Informed Decisions",
@@ -170,6 +165,14 @@ export const copyEn = {
       title: "Facebook",
       text: "Follow us on Facebook!",
     },
+    instagram: {
+      title: "Instagram",
+      text: "Follow us on Instagram!",
+    },
+    whatsapp: {
+      title: "WhatsApp",
+      text: "Message us on WhatsApp!",
+    },
     form: {
       title: "Send us a Message",
       name: "Name",
@@ -205,6 +208,9 @@ export const copyEn = {
     },
     copyright:
       "© Career Expo Syria 2026. The International Fair for Universities and higher education.",
+    organizer: {
+      logoAlt: "Vulcan",
+    },
   },
   countdown: {
     title: "CAREER EXPO SYRIA",

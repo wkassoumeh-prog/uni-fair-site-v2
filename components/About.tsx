@@ -20,7 +20,7 @@ const FALLBACK_TEXT_EN =
   "CAREER EXPO SYRIA offers students and parents a unique opportunity to explore educational options, compare programs, and communicate directly with official representatives of educational institutions.";
 
 const FALLBACK_TEXT_AR =
-  "CAREER EXPO سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الإلكترونية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
+  "CAREER EXPO سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الافتراضية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
   "يهدف المعرض إلى إنشاء اتصال مباشر بين الطلاب والمؤسسات التعليمية، مما يساعدهم على اتخاذ قرارات أكاديمية ومهنية مدروسة من خلال التفاعل وجهاً لوجه.\n\n" +
   "يوفر CAREER EXPO سوريا للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
 
@@ -56,7 +56,7 @@ const About: React.FC<AboutProps> = ({ locale, copy }) => {
           </div>
 
           <div className="lg:w-1/2">
-            <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
+            <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">
               {copy.about.badge}
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">

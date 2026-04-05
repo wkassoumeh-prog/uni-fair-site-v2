@@ -12,7 +12,7 @@ const ForVisitors: React.FC<ForVisitorsProps> = ({ copy }) => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="lg:w-1/2">
-            <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">{copy.forVisitors.badge}</span>
+            <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">{copy.forVisitors.badge}</span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">
               {copy.forVisitors.whoTitle}
             </h2>
@@ -31,7 +31,7 @@ const ForVisitors: React.FC<ForVisitorsProps> = ({ copy }) => {
           </div>
 
           <div className="lg:w-1/2">
-            <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block opacity-0" aria-hidden="true">
+            <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block opacity-0" aria-hidden="true">
               {copy.forVisitors.badge}
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">

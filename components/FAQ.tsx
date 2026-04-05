@@ -73,7 +73,7 @@ const FAQ: React.FC<FAQProps> = ({ locale, copy }) => {
     <section id="faq" className="py-24 bg-slate-50">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
+          <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">
             {copy.faq.badge}
           </span>
           <h2 className="text-4xl font-bold text-blue-900 mb-6">{copy.faq.title}</h2>

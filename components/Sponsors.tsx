@@ -44,7 +44,7 @@ export default function Sponsors({ copy }: SponsorsProps) {
     <section id="sponsors" className="py-24 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">
+          <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">
             {copy.sponsors.badge}
           </span>
           <h2 className="text-4xl font-bold text-blue-900 mb-6">{copy.sponsors.title}</h2>

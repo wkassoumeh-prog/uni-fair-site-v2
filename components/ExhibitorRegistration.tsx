@@ -75,7 +75,7 @@ const ExhibitorRegistration: React.FC<ExhibitorRegistrationProps> = ({ locale, c
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="lg:w-1/2">
-            <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">{copy.registration.badge}</span>
+            <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">{copy.registration.badge}</span>
             <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8 leading-tight">
               {copy.registration.title}
             </h2>

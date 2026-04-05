@@ -11,18 +11,18 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
   return (
     <footer className="bg-slate-900 text-white py-20">
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 border-b border-slate-800 pb-16">
-          {/* Brand Info */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-slate-800 pb-16">
+          {/* 1. Career Expo brand */}
           <div>
             <div className="flex items-center mb-6 h-16">
               <img src="/logo/logo-small-w.png" alt="Career Expo Syria 2026 Logo" className="h-18" />
             </div>
-            <p className="text-slate-400 leading-relaxed mb-6">
+            <p className="text-slate-400 leading-relaxed">
               {copy.footer.description}
             </p>
           </div>
 
-          {/* Locations */}
+          {/* 2. Event venue */}
           <div>
             <div className="flex items-center mb-6 h-12">
               <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.venue.title}</h4>
@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
             </div>
           </div>
 
-          {/* Contact Details */}
+          {/* 3. Contact */}
           <div>
             <div className="flex items-center mb-6 h-12">
               <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.contact.title}</h4>
@@ -58,6 +58,17 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
                 <PhoneNumber value={copy.footer.contact.phone} />
               </li>
             </ul>
+          </div>
+
+          {/* 4. Vulcan (2.7× original h-12 / sm:h-14) */}
+          <div>
+            <div className="flex items-center mb-6 min-h-16">
+              <img
+                src="/logo/Vulcan.png"
+                alt={copy.footer.organizer.logoAlt}
+                className="h-[8.1rem] sm:h-[9.45rem] w-auto max-w-full object-contain object-start opacity-90"
+              />
+            </div>
           </div>
         </div>
 

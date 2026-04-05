@@ -34,7 +34,7 @@ const WhyExhibit: React.FC<WhyExhibitProps> = ({ locale, copy }) => {
     <section id="why-exhibit" className="py-24 bg-slate-50">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <span className="text-amber-600 font-bold tracking-wider uppercase text-sm mb-4 block">{copy.whyExhibit.badge}</span>
+          <span className="text-amber-600 font-bold tracking-wider uppercase text-base md:text-lg mb-4 block">{copy.whyExhibit.badge}</span>
           <h2 className="text-4xl md:text-5xl font-bold text-blue-900 mb-8">{copy.whyExhibit.title}</h2>
           <p className="text-lg text-slate-600 leading-relaxed">
             {copy.whyExhibit.description}
