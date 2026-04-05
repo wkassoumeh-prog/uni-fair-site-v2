@@ -7,7 +7,7 @@ import About from '../../../components/About';
 import WhyExhibit from '../../../components/WhyExhibit';
 import ForVisitors from '../../../components/ForVisitors';
 import ExhibitorRegistration from '../../../components/ExhibitorRegistration';
-import Sponsors from '../../../components/Sponsors';
+import SponsorsSectionGate from '../../../components/SponsorsSectionGate';
 import FAQ from '../../../components/FAQ';
 import Contact from '../../../components/Contact';
 import Stats from '../../../components/Stats';
@@ -47,7 +47,7 @@ export default function Home() {
         <ForVisitors copy={copy} />
         <ExhibitorRegistration locale={locale} copy={copy} />
         {/* <FeaturedUniversities /> */}
-        <Sponsors copy={copy} />
+        <SponsorsSectionGate copy={copy} />
         <FAQ locale={locale} copy={copy} />
         <Contact copy={copy} />
       </main>

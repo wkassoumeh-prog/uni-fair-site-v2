@@ -13,7 +13,10 @@ type TableRowProps = {
 
 export default function TableRow({ row, selected, onToggle, onUpdate, onDelete }: TableRowProps) {
   return (
-    <tr key={row.id} className="border-b last:border-b-0 align-top">
+    <tr
+      key={row.id}
+      className={`border-b last:border-b-0 align-top ${!row.published ? "bg-slate-50/90 opacity-75" : ""}`}
+    >
       <td className="px-3 py-2">
         <input
           type="checkbox"
@@ -59,8 +62,10 @@ export default function TableRow({ row, selected, onToggle, onUpdate, onDelete }
       <td className="px-3 py-2">
         <input
           type="checkbox"
-          checked={row.published}
-          onChange={(e) => onUpdate(row.id, { published: e.target.checked })}
+          checked={!row.published}
+          onChange={(e) => onUpdate(row.id, { published: !e.target.checked })}
+          title="Hide from public site"
+          aria-label={`Hide ${row.name} from public site`}
         />
       </td>
 

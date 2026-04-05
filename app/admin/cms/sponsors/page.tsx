@@ -11,6 +11,7 @@ import BulkActions from "@/components/admin/sponsors/BulkActions";
 import TableHead from "@/components/admin/sponsors/TableHead";
 import TableRow from "@/components/admin/sponsors/TableRow";
 import EmptyState from "@/components/admin/shared/EmptyState";
+import SectionVisibility from "@/components/admin/sponsors/SectionVisibility";
 
 export default function SponsorsCmsPage() {
   const {
@@ -47,6 +48,8 @@ export default function SponsorsCmsPage() {
     removeSponsor,
     seedFromExamples,
     deleteSelected,
+    publishSelected,
+    hideSelected,
   } = useSponsorsAdmin();
 
   return (
@@ -54,6 +57,10 @@ export default function SponsorsCmsPage() {
       {/* Header Section */}
       <section data-section="header">
         <Header />
+      </section>
+
+      <section data-section="section-visibility">
+        <SectionVisibility />
       </section>
 
       {/* Add Form Section */}
@@ -87,6 +94,8 @@ export default function SponsorsCmsPage() {
         allSelected={allSelected}
         disabled={rows.length === 0}
         onToggleAll={toggleAll}
+        onPublishSelected={publishSelected}
+        onHideSelected={hideSelected}
         onDeleteSelected={deleteSelected}
       />
 
@@ -121,7 +130,8 @@ export default function SponsorsCmsPage() {
 
       {/* Help Text */}
       <p className="text-xs opacity-60">
-        Tip: set <span className="font-mono">sort_order</span> to control ordering (lower appears first).
+        Tip: set <span className="font-mono">sort_order</span> to control ordering (lower appears first). Hidden sponsors
+        stay in this list but are not shown on the live site.
       </p>
     </div>
   );

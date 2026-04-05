@@ -228,6 +228,7 @@ export const copyEn = {
     title: "Sponsors & Media Partners",
     description:
       "CAREER EXPO SYRIA proudly collaborates with a group of sponsors and media partners who contribute to the success of this educational event.",
+    emptyList: "Partners will be listed here soon.",
   },
   faq: {
     badge: "Help Center",

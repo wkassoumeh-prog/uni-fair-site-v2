@@ -266,6 +266,40 @@ export function useSponsorsAdmin() {
     }
   }
 
+  async function publishSelected() {
+    if (selectedIds.length === 0) return;
+
+    setMsg(null);
+    setErrorMsg(null);
+
+    const { error } = await supabase.from("sponsors").update({ published: true }).in("id", selectedIds);
+
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setMsg(`Published ${selectedIds.length} sponsor(s).`);
+      setRows((prev) => prev.map((r) => (selectedIds.includes(r.id) ? { ...r, published: true } : r)));
+      setSelected({});
+    }
+  }
+
+  async function hideSelected() {
+    if (selectedIds.length === 0) return;
+
+    setMsg(null);
+    setErrorMsg(null);
+
+    const { error } = await supabase.from("sponsors").update({ published: false }).in("id", selectedIds);
+
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setMsg(`Hid ${selectedIds.length} sponsor(s) from the site.`);
+      setRows((prev) => prev.map((r) => (selectedIds.includes(r.id) ? { ...r, published: false } : r)));
+      setSelected({});
+    }
+  }
+
   // ========================================================================
   // RETURN
   // ========================================================================
@@ -304,5 +338,7 @@ export function useSponsorsAdmin() {
     removeSponsor,
     seedFromExamples,
     deleteSelected,
+    publishSelected,
+    hideSelected,
   };
 }

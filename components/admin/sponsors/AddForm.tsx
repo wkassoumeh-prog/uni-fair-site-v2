@@ -71,8 +71,12 @@ export default function AddForm({
         </div>
 
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
-          Published
+          <input
+            type="checkbox"
+            checked={!published}
+            onChange={(e) => setPublished(!e.target.checked)}
+          />
+          Hide from site
         </label>
       </div>
 

@@ -6,6 +6,8 @@ type BulkActionsProps = {
   allSelected: boolean;
   disabled: boolean;
   onToggleAll: () => void;
+  onPublishSelected: () => void;
+  onHideSelected: () => void;
   onDeleteSelected: () => void;
 };
 
@@ -14,13 +16,17 @@ export default function BulkActions({
   allSelected,
   disabled,
   onToggleAll,
+  onPublishSelected,
+  onHideSelected,
   onDeleteSelected,
 }: BulkActionsProps) {
+  const noneSelected = selectedCount === 0;
+
   return (
     <div className="flex items-center justify-between" data-section="bulk-actions">
       <div className="text-sm opacity-70">Selected: {selectedCount}</div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2 justify-end">
         <button
           className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
           onClick={onToggleAll}
@@ -31,8 +37,24 @@ export default function BulkActions({
 
         <button
           className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
+          onClick={onPublishSelected}
+          disabled={noneSelected}
+        >
+          Publish selected
+        </button>
+
+        <button
+          className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
+          onClick={onHideSelected}
+          disabled={noneSelected}
+        >
+          Hide selected
+        </button>
+
+        <button
+          className="rounded-md border px-3 py-2 text-sm disabled:opacity-50"
           onClick={onDeleteSelected}
-          disabled={selectedCount === 0}
+          disabled={noneSelected}
         >
           Delete selected
         </button>
