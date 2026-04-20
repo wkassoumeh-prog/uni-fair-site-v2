@@ -6,8 +6,8 @@ import { sendContactEmail } from '@/app/actions/contact';
 import type { Copy } from '@/content/copy.en';
 import PhoneNumber from './PhoneNumber';
 
-const CONTACT_INSTAGRAM_URL = 'https://www.instagram.com/careerexpo_syria/';
-const CONTACT_WHATSAPP_URL = 'https://wa.me/963113344805';
+const CONTACT_INSTAGRAM_URL = 'https://www.instagram.com/careerexpo2026?igsh=Z2kwOGtya3U0N3dr';
+const CONTACT_WHATSAPP_URL = 'https://wa.me/963992874838';
 
 interface ContactProps {
   copy: Copy;

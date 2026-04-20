@@ -20,9 +20,9 @@ const FALLBACK_TEXT_EN =
   "CAREER EXPO SYRIA offers students and parents a unique opportunity to explore educational options, compare programs, and communicate directly with official representatives of educational institutions.";
 
 const FALLBACK_TEXT_AR =
-  "CAREER EXPO سوريا هو أول معرض تعليمي من نوعه في سوريا، يجمع الجامعات المحلية والدولية والجامعات الافتراضية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
+  "كارير اكسبو هو معرض تعليمي  فريد من نوعه في دمشق، يجمع الجامعات المحلية والدولية والجامعات الافتراضية والمعاهد ومراكز التدريب ومنصات التعلم الإلكتروني في مكان واحد.\n\n" +
   "يهدف المعرض إلى إنشاء اتصال مباشر بين الطلاب والمؤسسات التعليمية، مما يساعدهم على اتخاذ قرارات أكاديمية ومهنية مدروسة من خلال التفاعل وجهاً لوجه.\n\n" +
-  "يوفر CAREER EXPO سوريا للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
+  "يوفر كارير اكسبو للطلاب وأولياء الأمور فرصة فريدة لاستكشاف الخيارات التعليمية ومقارنة البرامج والتواصل مباشرة مع الممثلين الرسميين للمؤسسات التعليمية.";
 
 const About: React.FC<AboutProps> = ({ locale, copy }) => {
   const FALLBACK_TEXT = locale === 'ar' ? FALLBACK_TEXT_AR : FALLBACK_TEXT_EN;

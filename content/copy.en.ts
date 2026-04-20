@@ -199,7 +199,7 @@ export const copyEn = {
     venue: {
       title: "Event Venue",
       location: "Damascus City of Exhibitions\nDamascus City, Syria",
-      dates: "Dates: July 16 – 18, 2026",
+      dates: "Dates: 4-5-6 August, 2026",
     },
     contact: {
       title: "Contact Us",
@@ -214,7 +214,7 @@ export const copyEn = {
   },
   countdown: {
     title: "CAREER EXPO SYRIA",
-    date: "July 16-18, 2026 • 10:00 AM",
+    date: "4-5-6 August, 2026 • 10:00 AM",
     beginsIn: "Begins in",
     labels: {
       days: "Days",
