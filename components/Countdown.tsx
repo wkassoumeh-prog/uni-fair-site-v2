@@ -5,7 +5,7 @@ interface CountdownProps {
   copy: Copy;
 }
 
-const COUNTDOWN_DATE = new Date('2026-07-16T10:00:00+03:00').getTime();
+const COUNTDOWN_DATE = new Date('2026-08-04T10:00:00+03:00').getTime();
 
 const Countdown: React.FC<CountdownProps> = ({ copy }) => {
   const calculateTimeLeft = () => {
