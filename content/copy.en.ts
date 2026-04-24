@@ -154,7 +154,7 @@ export const copyEn = {
       "The CAREER EXPO SYRIA team is ready to assist you with all your inquiries.",
     phone: {
       title: "Phone Numbers",
-      number: "+963 11 3344805",
+      number: "+963 992 874 838",
       copied: "Copied!",
     },
     email: {
@@ -199,12 +199,16 @@ export const copyEn = {
     venue: {
       title: "Event Venue",
       location: "Damascus City of Exhibitions\nDamascus City, Syria",
-      dates: "Dates: 4-5-6 August, 2026",
+      dates: "Date 4-5-6 August, 2026",
+    },
+    eventDate: {
+      title: "Event Date",
+      value: "4-5-6 August, 2026",
     },
     contact: {
       title: "Contact Us",
       email: "info@careerexpo-syria.com",
-      phone: "+963 11 3344805",
+      phone: "+963 992 874 838",
     },
     copyright:
       "© Career Expo Syria 2026. The International Fair for Universities and higher education.",

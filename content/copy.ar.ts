@@ -153,7 +153,7 @@ export const copyAr = {
       "فريق كارير اكسبو سوريا جاهز للاجابة على جميع استفساراتك",
     phone: {
       title: "أرقام الهاتف",
-      number: "+963 11 3344805",
+      number: "+963 992 874 838",
       copied: "تم النسخ!",
     },
     email: {
@@ -199,10 +199,14 @@ export const copyAr = {
       location: "مدينة المعارض بدمشق\nمدينة دمشق، سوريا",
       dates: "التواريخ: 4-5-6 أغسطس 2026",
     },
+    eventDate: {
+      title: "تاريخ الحدث",
+      value: "4-5-6 أغسطس 2026",
+    },
     contact: {
       title: "اتصل بنا",
       email: "info@careerexpo-syria.com",
-      phone: "+963 11 3344805",
+      phone: "+963 992 874 838",
     },
     copyright:
       "© 2026 CAREER EXPO سوريا. المعرض الدولي للجامعات والتعليم العالي.",

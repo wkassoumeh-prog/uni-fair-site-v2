@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
   return (
     <footer className="bg-slate-900 text-white py-20">
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-slate-800 pb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 border-b border-slate-800 pb-16">
           {/* 1. Career Expo brand */}
           <div>
             <div className="flex items-center mb-6 h-16">
@@ -35,11 +35,25 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
                 </svg>
                 <p style={{ whiteSpace: 'pre-line' }}>{copy.footer.venue.location}</p>
               </div>
-              <p className="font-bold text-white mt-4">{copy.footer.venue.dates}</p>
             </div>
           </div>
 
-          {/* 3. Contact */}
+          {/* 3. Event date */}
+          <div>
+            <div className="flex items-center mb-6 h-12">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.eventDate.title}</h4>
+            </div>
+            <div className="text-slate-400">
+              <div className="flex items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z" />
+                </svg>
+                <p>{copy.footer.eventDate.value}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. Contact */}
           <div>
             <div className="flex items-center mb-6 h-12">
               <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.contact.title}</h4>
@@ -60,7 +74,7 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
             </ul>
           </div>
 
-          {/* 4. Vulcan (2.7× original h-12 / sm:h-14) */}
+          {/* 5. Vulcan (2.7× original h-12 / sm:h-14) */}
           <div>
             <div className="flex items-center mb-6 min-h-16">
               <img
