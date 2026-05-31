@@ -154,7 +154,7 @@ export const copyEn = {
       "The CAREER EXPO SYRIA team is ready to assist you with all your inquiries.",
     phone: {
       title: "Phone Numbers",
-      number: "+963 992 874 838",
+      number: "+963113344805",
       copied: "Copied!",
     },
     email: {
@@ -208,7 +208,7 @@ export const copyEn = {
     contact: {
       title: "Contact Us",
       email: "info@careerexpo-syria.com",
-      phone: "+963 992 874 838",
+      phone: "+963113344805",
     },
     copyright:
       "© Career Expo Syria 2026. The International Fair for Universities and higher education.",

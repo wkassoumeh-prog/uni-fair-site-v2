@@ -17,15 +17,15 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
             <div className="flex items-center mb-6 h-16">
               <img src="/logo/logo-small-w.png" alt="Career Expo Syria 2026 Logo" className="h-18" />
             </div>
-            <p className="text-slate-400 leading-relaxed">
+            <p className="text-slate-400 leading-relaxed" style={{ whiteSpace: 'pre-line' }}>
               {copy.footer.description}
             </p>
           </div>
 
           {/* 2. Event venue */}
           <div>
-            <div className="flex items-center mb-6 h-12">
-              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.venue.title}</h4>
+            <div className="flex items-center justify-center mb-0 h-auto">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider text-center">{copy.footer.venue.title}</h4>
             </div>
             <div className="text-slate-400 space-y-4">
               <div className="flex items-start space-x-3">
@@ -40,8 +40,8 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
 
           {/* 3. Event date */}
           <div>
-            <div className="flex items-center mb-6 h-12">
-              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.eventDate.title}</h4>
+            <div className="flex items-center justify-center mb-0 h-auto">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider text-center">{copy.footer.eventDate.title}</h4>
             </div>
             <div className="text-slate-400">
               <div className="flex items-center space-x-3">
@@ -55,8 +55,8 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
 
           {/* 4. Contact */}
           <div>
-            <div className="flex items-center mb-6 h-12">
-              <h4 className="text-lg font-bold text-white uppercase tracking-wider">{copy.footer.contact.title}</h4>
+            <div className="flex items-center justify-center mb-0 h-auto">
+              <h4 className="text-lg font-bold text-white uppercase tracking-wider text-center">{copy.footer.contact.title}</h4>
             </div>
             <ul className="space-y-4 text-slate-400">
               <li className="flex items-center space-x-3">
