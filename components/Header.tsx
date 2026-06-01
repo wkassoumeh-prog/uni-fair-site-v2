@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
               src={isScrolled ? "/logo/logo-small.png" : "/logo/logo-small-w.png"}
               alt="Career Expo Syria 2026 Logo"
               className={`object-cover transition-all duration-300 ${
-                isScrolled ? 'h-12' : 'h-16' 
+                isScrolled ? 'h-12' : 'h-14' 
               }`} 
               // h-20 (80px) when scrolled, h-28 (112px) when at top. 
               // Adjust these numbers to make the header taller/shorter.
