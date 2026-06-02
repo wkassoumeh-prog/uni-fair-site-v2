@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ copy }) => {
           {/* 1. Career Expo brand */}
           <div>
             <div className="flex items-center mb-6 h-16">
-              <img src="/logo/logo-small-w.png" alt="Career Expo Syria 2026 Logo" className="h-18" />
+              <img src="/logo/CareerExpoLogo-W.png" alt="Career Expo Syria 2026 Logo" className="h-20" />
             </div>
             <p className="text-slate-400 leading-relaxed" style={{ whiteSpace: 'pre-line' }}>
               {copy.footer.description}

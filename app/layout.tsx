@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Global University Fair 2026",
+  title: "CAREER EXPO SYRIA",
   description: "CAREER EXPO SYRIA - Connecting Students with Their Future",
 };
 

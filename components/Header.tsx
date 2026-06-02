@@ -51,10 +51,10 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, locale, copy }) => {
             aria-label="Go to homepage"
           >
             <img
-              src={isScrolled ? "/logo/logo-small.png" : "/logo/logo-small-w.png"}
+              src={isScrolled ? "/logo/CareerExpoLogo.png" : "/logo/CareerExpoLogo-W.png"}
               alt="Career Expo Syria 2026 Logo"
               className={`object-cover transition-all duration-300 ${
-                isScrolled ? 'h-12' : 'h-14' 
+                isScrolled ? 'h-16' : 'h-18' 
               }`} 
               // h-20 (80px) when scrolled, h-28 (112px) when at top. 
               // Adjust these numbers to make the header taller/shorter.
